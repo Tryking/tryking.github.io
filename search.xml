@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[闲言碎语]]></title>
     <url>%2F2017%2F12%2F15%2F%E9%97%B2%E8%A8%80%E7%A2%8E%E8%AF%AD%2F</url>
-    <content type="text"><![CDATA[#Test 文章 今天下地铁，刚出地铁口，有一妹子喊住我，问我能不能请她在附近吃个东西。想也没多想，肯定是骗局，遂扭头走了。在回来的路上，还不断反思，自己现在怎么这么没有善心，心里非常堵。后来回来跟行行说了这件事，行行说他也遇到了，这肯定是个骗局，但是具体要怎么行骗还不清楚。 哈，顿时释然~ 新搭建起的blog，要利用起来。]]></content>
+    <content type="text"><![CDATA[Test 文章今天下地铁，刚出地铁口，有一妹子喊住我，问我能不能请她在附近吃个东西。想也没多想，肯定是骗局，遂扭头走了。在回来的路上，还不断反思，自己现在怎么这么没有善心，心里非常堵。后来回来跟行行说了这件事，行行说他也遇到了，这肯定是个骗局，但是具体要怎么行骗还不清楚。 哈，顿时释然~ 新搭建起的blog，要利用起来。 Markdown 语法下面这个表格格式出不来，很郁闷 dog | bird | cat ----|------|---- foo | foo | foo bar | bar | bar baz | baz | baz dog bird cat foo foo foo bar bar bar baz baz baz]]></content>
       <categories>
         <category>Test&#39;</category>
       </categories>
