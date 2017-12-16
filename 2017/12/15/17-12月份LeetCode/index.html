@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="Tryking">
 <meta property="og:description" content="12/15/2017 11:00:39 PM344. Reverse String Write a function that takes a string as input and returns the string reversed. Example:Given s = “hello”, return “olleh”.  class Solution {     public String">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2017-12-15T15:09:32.495Z">
+<meta property="og:updated_time" content="2017-12-16T01:36:22.583Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="17.12月份LeetCode">
 <meta name="twitter:description" content="12/15/2017 11:00:39 PM344. Reverse String Write a function that takes a string as input and returns the string reversed. Example:Given s = “hello”, return “olleh”.  class Solution {     public String">
@@ -368,7 +368,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  68 字
+                  320 字
                 </span>
               
 
@@ -384,7 +384,7 @@
                   <span class="post-meta-item-text">Reading time &asymp;</span>
                 
                 <span title="Reading time">
-                  1 分钟
+                  2 分钟
                 </span>
               
             </div>
@@ -418,7 +418,23 @@
         return sb.toString();
     }
 }
-</code></pre><p><code>runtime: 5ms</code><br><code>result: your runtime beats 14% of java submissions.</code></p>
+</code></pre><p><code>runtime: 5ms</code></p>
+<p><code>result: Your runtime beats 14% of java submissions.</code></p>
+<h1 id="12-16-2017-9-02-32-AM"><a href="#12-16-2017-9-02-32-AM" class="headerlink" title="12/16/2017 9:02:32 AM"></a>12/16/2017 9:02:32 AM</h1><h2 id="620-Not-Boring-Movies"><a href="#620-Not-Boring-Movies" class="headerlink" title="620. Not Boring Movies"></a>620. Not Boring Movies</h2><blockquote>
+<p>X city opened a new cinema, many people would like to go to this cinema. The cinema also gives out a poster indicating the movies’ ratings and descriptions.</p>
+<p>Please write a SQL query to output movies with an odd numbered ID and a description that is not ‘boring’. Order the result by rating.</p>
+<p>For example: <a href="https://leetcode.com/problems/not-boring-movies/description/" title="not-boring-movies/description" target="_blank" rel="noopener">https://leetcode.com/problems/not-boring-movies/description/</a></p>
+</blockquote>
+<pre><code>select id, movie, description, rating from cinema where id%2=1 and description!=&apos;boring&apos; order by rating desc
+</code></pre><p>提交两遍通过，第一遍没有理解题意。</p>
+<p><code>result: Your runtime beats 58.30 % of mysql submissions.</code></p>
+<h2 id="733-Flood-Fill"><a href="#733-Flood-Fill" class="headerlink" title="733. Flood Fill"></a>733. Flood Fill</h2><blockquote>
+<p>An image is represented by a 2-D array of integers, each integer representing the pixel value of the image (from 0 to 65535).</p>
+<p>Given a coordinate (sr, sc) representing the starting pixel (row and column) of the flood fill, and a pixel value newColor, “flood fill” the image.</p>
+<p>To perform a “flood fill”, consider the starting pixel, plus any pixels connected 4-directionally to the starting pixel of the same color as the starting pixel, plus any pixels connected 4-directionally to those pixels (also with the same color as the starting pixel), and so on. Replace the color of all of the aforementioned pixels with the newColor.</p>
+<p>At the end, return the modified image.</p>
+</blockquote>
+<p><strong>PS：理解不了题意，不会做。<a href="https://leetcode.com/problems/flood-fill/description/" target="_blank" rel="noopener">https://leetcode.com/problems/flood-fill/description/</a></strong></p>
 
       
     </div>
@@ -597,7 +613,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#12-15-2017-11-00-39-PM"><span class="nav-number">1.</span> <span class="nav-text"><a href="#12-15-2017-11-00-39-PM" class="headerlink" title="12/15/2017 11:00:39 PM"></a>12/15/2017 11:00:39 PM</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#344-Reverse-String"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#344-Reverse-String" class="headerlink" title="344. Reverse String"></a>344. Reverse String</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#12-15-2017-11-00-39-PM"><span class="nav-number">1.</span> <span class="nav-text"><a href="#12-15-2017-11-00-39-PM" class="headerlink" title="12/15/2017 11:00:39 PM"></a>12/15/2017 11:00:39 PM</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#344-Reverse-String"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#344-Reverse-String" class="headerlink" title="344. Reverse String"></a>344. Reverse String</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#12-16-2017-9-02-32-AM"><span class="nav-number">2.</span> <span class="nav-text"><a href="#12-16-2017-9-02-32-AM" class="headerlink" title="12/16/2017 9:02:32 AM"></a>12/16/2017 9:02:32 AM</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#620-Not-Boring-Movies"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#620-Not-Boring-Movies" class="headerlink" title="620. Not Boring Movies"></a>620. Not Boring Movies</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#733-Flood-Fill"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#733-Flood-Fill" class="headerlink" title="733. Flood Fill"></a>733. Flood Fill</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -631,7 +647,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">314</span>
+    <span title="Site words total count">566</span>
   
 </div>
 
