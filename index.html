@@ -296,6 +296,204 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://tryking.github.io/2017/12/18/17-12月份_2LeetCode/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Tryking">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Tryking">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/18/17-12月份_2LeetCode/" itemprop="url">17.12月份_2LeetCode</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-12-18T00:00:00+08:00">
+                2017-12-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/12/18/17-12月份_2LeetCode/" class="leancloud_visitors" data-flag-title="17.12月份_2LeetCode">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  183 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">
+                  1 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="12-18-2017-8-01-03-AM"><a href="#12-18-2017-8-01-03-AM" class="headerlink" title="12/18/2017 8:01:03 AM"></a>12/18/2017 8:01:03 AM</h1><h2 id="496-Next-Greater-Element-I"><a href="#496-Next-Greater-Element-I" class="headerlink" title="496. Next Greater Element I"></a>496. Next Greater Element I</h2><blockquote>
+<p>You are given two arrays (without duplicates) nums1 and nums2 where nums1’s elements are subset of nums2. Find all the next greater numbers for nums1’s elements in the corresponding places of nums2.</p>
+<p>The Next Greater Number of a number x in nums1 is the first greater number to its right in nums2. If it does not exist, output -1 for this number.</p>
+<p>Example:<br><a href="Example">https://leetcode.com/problems/next-greater-element-i/description/</a></p>
+</blockquote>
+<pre><code>class Solution {
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+        List&lt;Integer&gt; result = new ArrayList();
+        for(int i=0; i &lt; nums1.length; i++){
+            int j = 0;
+            boolean isStart = false;
+            boolean isAdded = false;
+            for(; j &lt; nums2.length; j++){
+                if(nums2[j] == nums1[i]){
+                    isStart = true;
+                }
+                if(isStart &amp;&amp; nums2[j] &gt; nums1[i]){
+                    result.add(nums2[j]);
+                    isAdded = true;
+                    break;
+                }    
+            }
+            if(!isAdded){
+                result.add(-1);
+            }
+        }
+        int[] r = new int[result.size()];
+        for(int i=0; i &lt; result.size(); i++){
+            r[i] = result.get(i);
+        }
+        return r;
+    }
+}
+</code></pre><blockquote>
+<p>调试多次，一次Accepted</p>
+</blockquote>
+<p><code>Your runtime beats 9.32 % of java submissions.</code></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://tryking.github.io/2017/12/16/如何在不同的机器上使用Hexo更新博客/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -498,7 +696,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://tryking.github.io/2017/12/15/17-12月份LeetCode/">
+    <link itemprop="mainEntityOfPage" href="https://tryking.github.io/2017/12/15/17-12月份_1LeetCode/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Tryking">
@@ -517,7 +715,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/15/17-12月份LeetCode/" itemprop="url">17.12月份LeetCode</a></h1>
+                <a class="post-title-link" href="/2017/12/15/17-12月份_1LeetCode/" itemprop="url">17.12月份_1LeetCode</a></h1>
         
 
         <div class="post-meta">
@@ -547,7 +745,7 @@
 
           
           
-             <span id="/2017/12/15/17-12月份LeetCode/" class="leancloud_visitors" data-flag-title="17.12月份LeetCode">
+             <span id="/2017/12/15/17-12月份_1LeetCode/" class="leancloud_visitors" data-flag-title="17.12月份_1LeetCode">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1407,7 +1605,7 @@ baz | baz | baz
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1482,7 +1680,7 @@ baz | baz | baz
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">3.9k</span>
+    <span title="Site words total count">4.1k</span>
   
 </div>
 
