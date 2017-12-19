@@ -370,7 +370,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  183
+                  295
                 </span>
               
 
@@ -386,7 +386,7 @@
                   <span class="post-meta-item-text">Reading time &asymp;</span>
                 
                 <span title="Reading time">
-                  1
+                  2
                 </span>
               
             </div>
@@ -446,6 +446,37 @@
 <p>调试多次，一次Accepted</p>
 </blockquote>
 <p><code>Your runtime beats 9.32 % of java submissions.</code></p>
+<h1 id="12-19-2017-7-56-16-AM"><a href="#12-19-2017-7-56-16-AM" class="headerlink" title="12/19/2017 7:56:16 AM"></a>12/19/2017 7:56:16 AM</h1><h2 id="485-Max-Consecutive-Ones"><a href="#485-Max-Consecutive-Ones" class="headerlink" title="485. Max Consecutive Ones"></a>485. Max Consecutive Ones</h2><blockquote>
+<p>Given a binary array, find the maximum number of consecutive 1s in this array.</p>
+<p>Example: <a href="example">https://leetcode.com/problems/max-consecutive-ones/description/</a></p>
+</blockquote>
+<pre><code>class Solution {
+    public int findMaxConsecutiveOnes(int[] nums) {
+        int packet = 0;
+        int tempMax = 0;
+        for(int i = 0; i &lt; nums.length; i++){
+            if(nums[i] == 1){
+                tempMax += 1;
+                if(i == nums.length - 1 &amp;&amp; packet &lt; tempMax){
+                    packet = tempMax;
+                }
+            }else{
+                if(packet &lt; tempMax){
+                    packet = tempMax;
+                }
+                tempMax = 0;
+            }
+        }
+        return packet;
+    }
+}
+</code></pre><blockquote>
+<p>第二次Accept，第一次忘了对末尾是1的情况做判断。</p>
+</blockquote>
+<p><code>Your runtime beats 25.29 % of java submissions.</code></p>
+<blockquote>
+<p>consecutive：连续地</p>
+</blockquote>
 
           
         
@@ -1680,7 +1711,7 @@ baz | baz | baz
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">4.1k</span>
+    <span title="Site words total count">4.2k</span>
   
 </div>
 

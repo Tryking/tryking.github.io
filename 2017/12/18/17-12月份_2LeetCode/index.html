@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="Tryking">
 <meta property="og:description" content="12/18/2017 8:01:03 AM496. Next Greater Element I You are given two arrays (without duplicates) nums1 and nums2 where nums1’s elements are subset of nums2. Find all the next greater numbers for nums1’s">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2017-12-18T00:04:23.311Z">
+<meta property="og:updated_time" content="2017-12-18T23:59:24.331Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="17.12月份_2LeetCode">
 <meta name="twitter:description" content="12/18/2017 8:01:03 AM496. Next Greater Element I You are given two arrays (without duplicates) nums1 and nums2 where nums1’s elements are subset of nums2. Find all the next greater numbers for nums1’s">
@@ -368,7 +368,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  183
+                  295
                 </span>
               
 
@@ -384,7 +384,7 @@
                   <span class="post-meta-item-text">Reading time &asymp;</span>
                 
                 <span title="Reading time">
-                  1
+                  2
                 </span>
               
             </div>
@@ -442,6 +442,37 @@
 <p>调试多次，一次Accepted</p>
 </blockquote>
 <p><code>Your runtime beats 9.32 % of java submissions.</code></p>
+<h1 id="12-19-2017-7-56-16-AM"><a href="#12-19-2017-7-56-16-AM" class="headerlink" title="12/19/2017 7:56:16 AM"></a>12/19/2017 7:56:16 AM</h1><h2 id="485-Max-Consecutive-Ones"><a href="#485-Max-Consecutive-Ones" class="headerlink" title="485. Max Consecutive Ones"></a>485. Max Consecutive Ones</h2><blockquote>
+<p>Given a binary array, find the maximum number of consecutive 1s in this array.</p>
+<p>Example: <a href="example">https://leetcode.com/problems/max-consecutive-ones/description/</a></p>
+</blockquote>
+<pre><code>class Solution {
+    public int findMaxConsecutiveOnes(int[] nums) {
+        int packet = 0;
+        int tempMax = 0;
+        for(int i = 0; i &lt; nums.length; i++){
+            if(nums[i] == 1){
+                tempMax += 1;
+                if(i == nums.length - 1 &amp;&amp; packet &lt; tempMax){
+                    packet = tempMax;
+                }
+            }else{
+                if(packet &lt; tempMax){
+                    packet = tempMax;
+                }
+                tempMax = 0;
+            }
+        }
+        return packet;
+    }
+}
+</code></pre><blockquote>
+<p>第二次Accept，第一次忘了对末尾是1的情况做判断。</p>
+</blockquote>
+<p><code>Your runtime beats 25.29 % of java submissions.</code></p>
+<blockquote>
+<p>consecutive：连续地</p>
+</blockquote>
 
       
     </div>
@@ -620,7 +651,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#12-18-2017-8-01-03-AM"><span class="nav-number">1.</span> <span class="nav-text"><a href="#12-18-2017-8-01-03-AM" class="headerlink" title="12/18/2017 8:01:03 AM"></a>12/18/2017 8:01:03 AM</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#496-Next-Greater-Element-I"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#496-Next-Greater-Element-I" class="headerlink" title="496. Next Greater Element I"></a>496. Next Greater Element I</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#12-18-2017-8-01-03-AM"><span class="nav-number">1.</span> <span class="nav-text"><a href="#12-18-2017-8-01-03-AM" class="headerlink" title="12/18/2017 8:01:03 AM"></a>12/18/2017 8:01:03 AM</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#496-Next-Greater-Element-I"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#496-Next-Greater-Element-I" class="headerlink" title="496. Next Greater Element I"></a>496. Next Greater Element I</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#12-19-2017-7-56-16-AM"><span class="nav-number">2.</span> <span class="nav-text"><a href="#12-19-2017-7-56-16-AM" class="headerlink" title="12/19/2017 7:56:16 AM"></a>12/19/2017 7:56:16 AM</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#485-Max-Consecutive-Ones"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#485-Max-Consecutive-Ones" class="headerlink" title="485. Max Consecutive Ones"></a>485. Max Consecutive Ones</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -654,7 +685,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">4.1k</span>
+    <span title="Site words total count">4.2k</span>
   
 </div>
 
