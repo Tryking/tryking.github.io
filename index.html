@@ -370,7 +370,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  377
+                  747
                 </span>
               
 
@@ -386,7 +386,7 @@
                   <span class="post-meta-item-text">Reading time &asymp;</span>
                 
                 <span title="Reading time">
-                  2
+                  4
                 </span>
               
             </div>
@@ -482,6 +482,80 @@
 <p>Example: <a href="example">https://leetcode.com/problems/distribute-candies/description/</a></p>
 </blockquote>
 <p><code>提交多次均未Accept，过两天再做。</code></p>
+<h1 id="12-22-2017-7-59-39-AM"><a href="#12-22-2017-7-59-39-AM" class="headerlink" title="12/22/2017 7:59:39 AM"></a>12/22/2017 7:59:39 AM</h1><h2 id="412-Fizz-Buzz"><a href="#412-Fizz-Buzz" class="headerlink" title="412. Fizz Buzz"></a>412. Fizz Buzz</h2><blockquote>
+<p>Write a program that outputs the string representation of numbers from 1 to n.</p>
+<p>But for multiples of three it should output “Fizz” instead of the number and for the multiples of five output “Buzz”. For numbers which are multiples of both three and five output “FizzBuzz”.</p>
+</blockquote>
+<pre><code>class Solution {
+    public List&lt;String&gt; fizzBuzz(int n) {
+        List&lt;String&gt; result = new ArrayList(n);
+        for(int i = 1; i &lt;= n; i++){
+            if(i % 3 == 0 || i % 5 == 0){
+                if(i % 3 == 0 &amp;&amp; i % 5 == 0){
+                    result.add(&quot;FizzBuzz&quot;);
+                }else if(i % 3 == 0){
+                    result.add(&quot;Fizz&quot;);
+                }else{
+                    result.add(&quot;Buzz&quot;);
+                }
+            }else{
+                result.add(String.valueOf(i));
+            }
+        }
+        return result;
+    }
+}
+</code></pre><p><em>比较简单，注意String的List中加入int型值的时候不会自动转换，要自己转黄成String类型的值</em></p>
+<p><code>Your runtime beats 29.60 % of java submissions.</code></p>
+<h2 id="38-Count-and-Say"><a href="#38-Count-and-Say" class="headerlink" title="38. Count and Say"></a>38. Count and Say</h2><blockquote>
+<p>The count-and-say sequence is the sequence of integers with the first five terms as following:</p>
+</blockquote>
+<pre><code>1.     1
+2.     11
+3.     21
+4.     1211
+5.     111221
+</code></pre><blockquote>
+<p>1 is read off as “one 1” or 11.</p>
+<p>11 is read off as “two 1s” or 21.</p>
+<p>21 is read off as “one 2, then one 1” or 1211.</p>
+<p>Given an integer n, generate the nth term of the count-and-say sequence.</p>
+<p><a href="">https://leetcode.com/problems/count-and-say/description/</a></p>
+</blockquote>
+<p>Note: Each term of the sequence of integers will be represented as a string.</p>
+<pre><code>class Solution {
+    public String countAndSay(int n) {
+        String temp = &quot;1&quot;;
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i &lt; n-1; i++){
+            char sameChar = temp.charAt(0);
+            int sameCharCount = 0;
+            sb.setLength(0);
+            for(int j=0; j &lt; temp.length(); j++){
+                if(sameChar == temp.charAt(j)){
+                    sameCharCount ++;
+                    if(j == temp.length() -1){
+                        sb.append(sameCharCount).append(sameChar);
+                    }
+                }else{
+                    sb.append(sameCharCount).append(sameChar);
+                    sameChar = temp.charAt(j);
+                    sameCharCount = 1;
+                    if(j == temp.length() -1){
+                        sb.append(sameCharCount).append(sameChar);
+                    }
+                }
+            }
+            temp = sb.toString();
+        }
+        if(sb.toString().equals(&quot;&quot;)){
+            return &quot;1&quot;;
+        }
+        return sb.toString();
+    }
+}
+</code></pre><p><em>用测试用例调试多次，修改多次，最终一次Accept</em></p>
+<p><code>Your runtime beats 48.96 % of java submissions.</code></p>
 
           
         
@@ -1716,7 +1790,7 @@ baz | baz | baz
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">4.3k</span>
+    <span title="Site words total count">4.7k</span>
   
 </div>
 
