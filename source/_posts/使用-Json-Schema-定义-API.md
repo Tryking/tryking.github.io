@@ -283,6 +283,7 @@ public class TreeNode {
    public void setChildren(List<TreeNode> children) {...}
 }
 ``` 
+
 ## 更多
 
 * javaEnumNames
@@ -361,4 +362,5 @@ public class TreeNode {
 	```
 	
 ## 声明
+
 > 本文绝大部分内容是引用的 `jsonschame2pojo` 的文档，更多内容请看官方文档 [jsonschema2pojo](http://www.jsonschema2pojo.org/).
