@@ -274,6 +274,7 @@ public class Rose extends Flower {
    }
 }
 ```
+
 这个表明 `children` 属性引用的是该 object 自身，所以这可以生成一个 Tree 类型的类。
 
 ```
@@ -288,78 +289,78 @@ public class TreeNode {
 
 * javaEnumNames
 
-	```
-	{
-	    "type" : "object",
-	    "properties" : {
-	        "foo" : {
-	            "type" : "string",
-	            "enum" : ["H","L"],
-	            "javaEnumNames" : ["HIGH","LOW"]
-	        }
-	    }
-	}
-	```
+```
+{
+    "type" : "object",
+    "properties" : {
+        "foo" : {
+            "type" : "string",
+            "enum" : ["H","L"],
+            "javaEnumNames" : ["HIGH","LOW"]
+        }
+    }
+}
+```
 	
-	生成的类：
+生成的类：
 	
-	```
-	public enum Foo {
-	    HIGH("H"),
-	    LOW("L")
-	    ...
-	}
-	```
+```
+public enum Foo {
+    HIGH("H"),
+    LOW("L")
+    ...
+}
+```
 
 * javaInterfaces
 	
-	```
-	{
-	    "javaInterfaces" : ["java.io.Serializable", "Cloneable"],
-	    "type" : "object"
-	}
-	```
+```
+{
+    "javaInterfaces" : ["java.io.Serializable", "Cloneable"],
+    "type" : "object"
+}
+```
 	
-	生成的类：
+生成的类：
 	
-	```
-	public class FooBar implements Serializable, Cloneable
-	{
-	...
-	```
+```
+public class FooBar implements Serializable, Cloneable
+{
+...
+```
 
 * javaName
 
-	```
-	{
-	  "type": "object",
-	  "properties": {
-	    "a": {
-	      "javaName": "b",
-	      "type": "string"
-	    }
-	  }
-	}
-	```
+```
+{
+  "type": "object",
+  "properties": {
+    "a": {
+      "javaName": "b",
+      "type": "string"
+    }
+  }
+}
+```
 	
-	生成的类：
+生成的类：
 	
-	```
-	public class MyClass {
-	    @JsonProperty("a")
-	    private String b;
+```
+public class MyClass {
+    @JsonProperty("a")
+    private String b;
 	
-	    @JsonProperty("a")
-	    public String getB() {
-	        return b;
-	    }
+    @JsonProperty("a")
+    public String getB() {
+        return b;
+    }
 	
-	    @JsonProperty("a")
-	    public void setB(String b) {
-	        this.b = b;
-	    }
-	}
-	```
+    @JsonProperty("a")
+    public void setB(String b) {
+        this.b = b;
+    }
+}
+```
 	
 ## 声明
 
