@@ -279,88 +279,90 @@ public class Rose extends Flower {
 
 ```
 public class TreeNode {
-   public List<TreeNode> getChildren() {...}
+   public List<TreeNode> getChildren() {
+   ...}
 
-   public void setChildren(List<TreeNode> children) {...}
+   public void setChildren(List<TreeNode> children) {
+   ...}
 }
-``` 
+```
 
 ## 更多
 
 * javaEnumNames
 
-```
-{
-    "type" : "object",
-    "properties" : {
-        "foo" : {
-            "type" : "string",
-            "enum" : ["H","L"],
-            "javaEnumNames" : ["HIGH","LOW"]
-        }
-    }
-}
-```
-	
-生成的类：
-	
-```
-public enum Foo {
-    HIGH("H"),
-    LOW("L")
-    ...
-}
-```
+	```
+	{
+	    "type" : "object",
+	    "properties" : {
+	        "foo" : {
+	            "type" : "string",
+	            "enum" : ["H","L"],
+	            "javaEnumNames" : ["HIGH","LOW"]
+	        }
+	    }
+	}
+	```
+		
+	生成的类：
+		
+	```
+	public enum Foo {
+	    HIGH("H"),
+	    LOW("L")
+	    ...
+	}
+	```
 
 * javaInterfaces
 	
-```
-{
-    "javaInterfaces" : ["java.io.Serializable", "Cloneable"],
-    "type" : "object"
-}
-```
-	
-生成的类：
-	
-```
-public class FooBar implements Serializable, Cloneable
-{
-...
-```
+	```
+	{
+	    "javaInterfaces" : ["java.io.Serializable", "Cloneable"],
+	    "type" : "object"
+	}
+	```
+		
+	生成的类：
+		
+	```
+	public class FooBar implements Serializable, Cloneable
+	{
+	...
+	```
 
 * javaName
 
-```
-{
-  "type": "object",
-  "properties": {
-    "a": {
-      "javaName": "b",
-      "type": "string"
-    }
-  }
-}
-```
-	
-生成的类：
-	
-```
-public class MyClass {
-    @JsonProperty("a")
-    private String b;
-	
-    @JsonProperty("a")
-    public String getB() {
-        return b;
-    }
-	
-    @JsonProperty("a")
-    public void setB(String b) {
-        this.b = b;
-    }
-}
-```
+	```
+	{
+	  "type": "object",
+	  "properties": {
+	    "a": {
+	      "javaName": "b",
+	      "type": "string"
+	    }
+	  }
+	}
+	```
+		
+	生成的类：
+		
+	```
+	public class MyClass {
+	    @JsonProperty("a")
+	    private String b;
+		
+	    @JsonProperty("a")
+	    public String getB() {
+	        return b;
+	    }
+		
+	    @JsonProperty("a")
+	    public void setB(String b) {
+	        this.b = b;
+	    }
+	}
+	```
 	
 ## 声明
 
