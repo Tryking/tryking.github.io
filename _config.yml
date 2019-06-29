@@ -72,6 +72,14 @@ pagination_dir: page
 
 # Extensions
 ## Plugins: https://hexo.io/plugins/
+Plugins:
+- hexo-generator-baidu-sitemap
+- hexo-generator-sitemap
+baidusitemap:
+    path: baidusitemap.xml
+sitemap:
+    path: sitemap.xml
+
 ## Themes: https://hexo.io/themes/
 theme: next
 
@@ -98,3 +106,4 @@ deploy:
   repo: https://github.com/Tryking/tryking.github.io.git
   branch: master
   # message: use default
+
