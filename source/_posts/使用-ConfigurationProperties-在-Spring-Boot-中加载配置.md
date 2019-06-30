@@ -16,7 +16,7 @@ tags:
 ### 创建标准 Spring Boot 工程
 首先，我们使用一个标准的 Spring Boot 的依赖设置，在 `build.gradle`文件的`plugins`以及`dependencies`中加入相关内容，如下：
 
-```
+```Java
 plugins {
     id 'org.springframework.boot' version '2.1.6.RELEASE'
     id 'java'
@@ -30,7 +30,7 @@ dependencies {
 
 然后创建 Spring application 类，用于启动我们的 Spring Boot 应用。（如果使用 IDEA 进行开发，使用 `New Project` -> `Spring Initializa` 创建 `Spring Boot` 应用非常方便，IDEA 会帮我们自动生成 Spring application 类。）我们顺便在Spring Application 类中加上一个 component，方便我们进行测试。(实现了`CommandLineRunner`的 component 会在应用启动成功后运行)
 
-```
+```Java
 @SpringBootApplication
 public class ConfigurationApplication {
 
@@ -53,7 +53,7 @@ public class ConfigurationApplication {
 ### 编写配置文件
 Spring Boot 中默认的配置文件是 `application.properties`，但是我们通常会将自定义的配置单独放在一个文件中，这里我们在 resources 目录下创建一个配置文件 `configprops.properties`，并加入以下配置内容：
 
-```
+```Java
 user.name=Tryking
 user.password=Security
 user.age=18
@@ -63,7 +63,7 @@ user.age=18
 ### 编写配置读取类
 接下来我们编写一个配置读取的类文件
 
-```
+```Java
 @Configuration
 @PropertySource("classpath:configprops.properties")
 @ConfigurationProperties(prefix = "user")
@@ -117,7 +117,7 @@ public class ConfigProperties {
 
 然后我们在 `ConfigurationApplication` 启动类中定义的 `StartupRunner` component 中增加对此配置文件的测试，我们使用此配置的 `toString()` 方法进行输出。
 
-```
+```Java
 private final ConfigProperties configProperties;
 
 // 引入配置 bean
@@ -154,7 +154,7 @@ ConfigProperties{name='Tryking', password='Security', age=18}
 
 我们在配置文件中继续增加更多的配置：
 
-```
+```Java
 # Simple properties
 user.name=Tryking
 user.password=Security
@@ -175,7 +175,7 @@ user.job.salary=50000
 
 然后在配置读取类中增加对这些属性的读取。
 
-```
+```Java
 private String name;
 private String password;
 private int age;
@@ -189,7 +189,7 @@ private Job job;
 
 完成后，我们重新运行 Application，可以看到这些复杂配置也成功读取出来了：
 
-```
+```Java
 Application running
 ConfigProperties{name='Tryking', password='Security', age=18, friends=[Tom, Jack], scores={java=90, python=95}, job=Job{address='Beijing', salary=50000}}
 ```
@@ -202,7 +202,7 @@ ConfigProperties{name='Tryking', password='Security', age=18, friends=[Tom, Jack
 
 我们先创建一个简单的 Item 供后面的类引用。
 
-```
+```Java
 public class Item {
     private String name;
     private int size;
@@ -213,7 +213,7 @@ public class Item {
 
 接下来，我们在 @Bean 注解上使用 @ConfigurationProperties，以绑定我们配置的属性到此 Bean 上。
 
-```
+```Java
 @Configuration
 public class ConfigProperties {
  
