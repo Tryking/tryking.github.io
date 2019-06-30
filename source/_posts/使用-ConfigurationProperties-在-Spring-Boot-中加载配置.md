@@ -261,11 +261,8 @@ public class ConfigProperties {
 
 如果有验证无法通过，那么我们启动应用的时候 Application 将启动失败，并且抛出一个`IllegalStateException`异常。
 
-
-
-
-
-
+## 相关代码
+[Spring Boot Configuration](https://github.com/Tryking/SpringBoot/tree/master/Configuration)
 
 
 
