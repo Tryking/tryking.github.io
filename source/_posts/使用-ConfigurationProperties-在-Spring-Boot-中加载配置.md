@@ -169,7 +169,7 @@ user.scores.java=90
 user.scores.python=95
 
 # Object properties
-=Beijing
+user.job.address=Beijing
 user.job.salary=50000
 ```
 
