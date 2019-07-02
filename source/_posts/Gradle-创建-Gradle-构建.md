@@ -11,7 +11,7 @@ tags:
 * 大约 11 分钟的时间
 * 一个终端工具（Terminal）
 * 一个 Java 运行时环境（JRE）或者 Java 开发工具（JDK），Java 版本需要在 1.8 以上。
-* 一个 [Gradle 发布版本](Gradle distribution)，版本最好在 4.10.3 及以上。
+* 一个 [Gradle 发布版本](https://gradle.org/install)，版本最好在 4.10.3 及以上。
 
 ## 初始化一个项目
 
