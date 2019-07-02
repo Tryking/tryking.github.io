@@ -211,3 +211,5 @@ version = "1.0"
 * Building Scala Libraries
 
 你还可以在 [sample Gradle builds on GitHub](https://github.com/gradle/gradle/tree/master/subprojects/docs/src/samples) 查看更多构建示例。
+
+> 声明：本文为官方文档的翻译。[Creating New Gradle Builds](https://guides.gradle.org/creating-new-gradle-builds/#explore_and_debug_your_build)
