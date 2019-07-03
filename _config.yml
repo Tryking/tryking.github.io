@@ -81,7 +81,7 @@ sitemap:
     path: sitemap.xml
 
 ## Themes: https://hexo.io/themes/
-theme: next
+theme: icarus
 
 leancloud_counter_security:
   enable_sync: true
