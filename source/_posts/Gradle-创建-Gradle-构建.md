@@ -1,6 +1,7 @@
 ---
 title: Gradle - 创建 Gradle 构建
 date: 2019-07-02 23:35:25
+toc: true
 tags:
 	- Gradle
 ---
