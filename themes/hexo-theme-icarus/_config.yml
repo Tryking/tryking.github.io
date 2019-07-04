@@ -224,6 +224,8 @@ plugins:
     # BuSuanZi site/page view counter
     # https://busuanzi.ibruce.info
     busuanzi: true
+    #51.la统计
+    tj51la: true
 # CDN provider settings
 # https://ppoffice.github.io/hexo-theme-icarus/Configuration/Theme/speed-up-your-site-with-custom-cdn/
 providers:
