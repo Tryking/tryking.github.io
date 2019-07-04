@@ -67,6 +67,23 @@ tags: Hexo blog
 	```
 	> 参数含义同 `pm2 stop`
 
+# 后续问题
+今天，运行 `pm2` 时出现如下报错：
+
+```Shell
+......
+......
+npm ERR! peer dep missing: eslint@>= 4.12.1, required by babel-eslint@10.0.1
+
+npm ERR! peer dep missing: acorn@^6.0.0, required by acorn-jsx@5.0.1
+```
+
+看错误原因是缺少 `eslint` 依赖，执行以下命令安装即可：
+
+``` Shell
+npm install eslint@>=4.12.1
+npm install acorn@^6.0.0
+```
 
 
 
