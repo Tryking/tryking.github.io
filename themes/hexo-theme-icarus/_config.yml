@@ -161,6 +161,7 @@ widgets:
         # Links to be shown in the links widget
         links:
             CSDN: 'https://blog.csdn.net/sinat_18268881'
+            Home Page: 'https://dengkaiting.com'
             # PPOffice: 'https://github.com/ppoffice'
     -
         # Widget name
