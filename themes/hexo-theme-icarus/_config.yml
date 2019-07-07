@@ -166,7 +166,7 @@ widgets:
         # Widget name
         type: category
         # Where should the widget be placed, left or right
-        position: left
+        position: right
     -
         # Widget name
         type: tagcloud
