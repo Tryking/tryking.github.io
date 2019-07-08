@@ -12,6 +12,8 @@ tags:
 
 ArrayList共有三个构造方法
 
+<!--more-->
+
 1.  无参构造方法
 
     public ArrayList() {

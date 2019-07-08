@@ -13,6 +13,8 @@ tags:
 
 虽然我们常说在Java中我们不缺对象，任何时刻都可以 new 一个对象，一切皆为对象。但是在Java中还存在一些原始数据类型，比如 int，long，float，double，byte，short，boolean，char。这些原始数据类型并不是对象。 在Java中，引入了对于8中基本数据类型的包装类，比如对于 int 的包装类 Integer 。在Integer中，有一个int字段用于存储数据值，并且还提供了一些基本数据类型int做不到的事情，比如和字符串的转换等。
 
+<!--more-->
+
 装箱拆箱
 ====
 

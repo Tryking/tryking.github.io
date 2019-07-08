@@ -6,7 +6,7 @@ tags:
 # 前置知识
 
 首先，你应该知道如何用 Hexo 在本地搭建一个博客系统，具体见 [Hexo](https://hexo.io/zh-cn/docs/)。
-
+<!--more-->
 其次，我们如果想使用 GitHub Pages 搭建自己的博客只需要在 GitHub 创建一个名为`***.github.io`的 repository，其中`***`代表你 GitHub 的名字。然后将我们要展示的静态文件放到此 repository 的`master`分支下即可，具体见 [Websites for you and your projects.](https://pages.github.com/)。
 
 搭建完毕之后，你需要了解 Hexo 发布博客的基本步骤，主要使用以下几个命令：

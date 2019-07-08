@@ -10,6 +10,8 @@ tags:
 
 之前在Windows上用的抓包工具主要是Fiddler，由于之前对Fiddler用的也不是很熟，在Windows上也是各种不顺，遂查了下Mac下哪个软件不错，网上一致推荐Charles，那就下个Charles来一发吧。 装好之后，立马就来一发，让人崩溃的是 _-_ ![image](http://media.dengkaiting.com/Charles-01.jpg) 这是啥？怎么全是乱码？！网上找了一些解决办法，经过多次尝试，找到一个靠谱的，记录如下。
 
+<!--more-->
+
 安装SSL证书
 -------
 

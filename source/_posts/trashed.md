@@ -7,7 +7,7 @@ tags:
 ---
 
 Jupyter可以用来调试程序，因为它自带了tab键可以预览函数功能，因此对有一些比较生疏的函数的使用非常有利。
-
+<!--more-->
 1.  生成配置文件
 
      jupyter notebook --generate-config

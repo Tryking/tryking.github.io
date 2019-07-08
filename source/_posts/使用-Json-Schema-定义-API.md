@@ -7,7 +7,7 @@ tags:
 - Java
 ---
 前面我们介绍了 `Json Schema` 的基本内容，这篇文章我们结合 `jsonschema2pojo` 工具深入分析如何使用 `Json Schema` 生成 API，学习更多关于 `Json Schema` 的关键字等知识。
-
+<!--more-->
 `jsonschema2pojo` 该库提供了多种使用`Json Schame`文件生成 Java 类的方法，比如 `Maven`插件, `Gradle`插件, `Ant`任务, 以及直接使用命令行，甚至还可以在代码中直接使用，具体参照 [jsonschema2pojo Getting Started](https://github.com/joelittlejohn/jsonschema2pojo/wiki/Getting-Started)
 
 这里我直接采用 Mac 命令行的方式，在 Mac 下安装此命令的方式比较简单，直接运行 `brew install jsonschema2pojo` 安装即可。
