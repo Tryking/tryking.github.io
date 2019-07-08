@@ -147,6 +147,9 @@ widgets:
             # Dribbble:
             #     icon: fab fa-dribbble
             #     url: 'https://dribbble.com'
+            CSDN:
+                icon: fab fa-cuttlefish
+                url: https://blog.csdn.net/sinat_18268881
             RSS:
                 icon: fas fa-rss
                 url: /
@@ -162,7 +165,7 @@ widgets:
         position: left
         # Links to be shown in the links widget
         links:
-            CSDN: 'https://blog.csdn.net/sinat_18268881'
+            # CSDN: 'https://blog.csdn.net/sinat_18268881'
             Home Page: 'https://dengkaiting.com'
             # PPOffice: 'https://github.com/ppoffice'
     -
