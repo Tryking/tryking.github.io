@@ -100,8 +100,10 @@ thumbnail:
 	
 	usermod -G GROUP_1[,GROUP_2,...] USER_NAME
 	```
+
 	
 	> g 是覆盖，G是添加。
+
 
 * 检查非 root 用户账号是否过期（包括密码）
 
