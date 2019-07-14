@@ -263,8 +263,8 @@ BUILD SUCCESSFUL in 0s
 
 
 ---
-> **标题**：[Gradle - 构建 Java 应用程序](https://dengkaiting.com/2019/07/02/Gradle - 构建 Java 应用程序)
+> **标题**：[Gradle - 构建 Java 应用程序](https://dengkaiting.com/2019/07/02/Gradle%20-%20构建%20Java%20应用程序)
 > **作者**：[末日没有进行曲](https://dengkaiting.com/)
-> **链接**：[https://dengkaiting.com/2019/07/02/Gradle - 构建 Java 应用程序](https://dengkaiting.com/2019/07/02/Gradle - 构建 Java 应用程序)
+> **链接**：[https://dengkaiting.com/2019/07/02/Gradle%20-%20构建%20Java%20应用程序](https://dengkaiting.com/2019/07/02/Gradle%20-%20构建%20Java%20应用程序)
 > **时间**：2019-07-11
 > **声明**：本博客所有文章均采用 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh) 许可协议，转载请注明出处。
