@@ -2,8 +2,10 @@
 title: Gradle - 创建 Gradle 构建
 date: 2019-07-02 23:35:25
 toc: true
+category:
+- Gradle
 tags:
-	- Gradle
+- Gradle
 ---
 
 根据此教程，你可以创建一个小型 `Gradle` 项目，这里面会涉及一些基础的 `Gradle` 命令，你可以对 `Gradle` 是如何管理项目的有个深刻的理解。
