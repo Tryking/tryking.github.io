@@ -20,7 +20,6 @@ thumbnail:
 * 版本为 5.4.1 或者更高的 Gradle 分发版
 
 ## 查看用户手册
-Gradle附带一个名为Build Init插件的内置插件。它在Gradle用户手册中有记录。该插件提供了一个名为init的任务，用于生成项目。该插件还使用（也是内置的）包装器任务来创建Gradle包装器脚本gradlew。
 
 Gradle 默认有一个名为 `Build Init` 的内置插件，在 [Gradle 用户手册](https://docs.gradle.org/5.4.1/userguide/build_init_plugin.html) 中有记录。该插件提供了一个名为 `init` 的任务，用于生成项目。该插件还会使用 `wrapper`（也是内置的）任务来创建 Gradle 包装器脚本 `gradlew`。
 
