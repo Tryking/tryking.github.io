@@ -3,7 +3,10 @@ title: Bootstrap - Modal 插件
 toc: true
 date: 2019-07-19 21:56:01
 tags:
+- Bootstrap
+- 前端
 category:
+- 前端
 thumbnail:
 ---
 有时候我们可能需要在页面弹出一个对话框，或者传统的叫做 Popup Window 的东西。其实 Bootstrap 给我们提供了一个插件，可以非常方便的构造这几种东西，这个插件叫做 `Modal`。
@@ -100,8 +103,8 @@ Bootstrap 的插件有很多都是独立成型的，并不需要依赖 Bootstrap
 > 更多用法，可参考 [W3C教程：Bootstrap JS Modal](https://www.w3schools.com/bootstrap/bootstrap_ref_js_modal.asp)。
 
 ---
-> **标题**：[title](https://dengkaiting.com/)
+> **标题**：[Bootstrap-Modal-插件](https://dengkaiting.com/2019/07/19/Bootstrap-Modal-插件/)
 > **作者**：[末日没有进行曲](https://dengkaiting.com/)
-> **链接**：[link](https://dengkaiting.com/)
-> **时间**：2019-07-11
+> **链接**：[link](https://dengkaiting.com/2019/07/19/Bootstrap-Modal-插件/)
+> **时间**：2019-07-19
 > **声明**：本博客所有文章均采用 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh) 许可协议，转载请注明出处。
