@@ -1,15 +1,18 @@
 ---
-title: {{ title }}
-date: {{ date }}
+title: Life record
 toc: true
+date: 2019-08-08 07:55:22
 tags:
+- 生活
 category:
-thumbnail: 
+- 生活
+thumbnail:
 ---
 
-
+Record
 <!--more-->
 
+[Life Record](http://note.youdao.com/noteshare?id=bc1fd6b67463e65ede83d834ff03ce2d)
 
 ---
 > **标题**：[{{title}}](https://dengkaiting.com/2019/00/00/{{ title }}/)

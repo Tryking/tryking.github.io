@@ -2,8 +2,8 @@
 title: Java中的自动装箱，自动拆箱
 url: 143.html
 id: 143
-categories:
-  - Java
+category:
+- Java
 date: 2018-06-06 00:31:47
 tags:
 ---

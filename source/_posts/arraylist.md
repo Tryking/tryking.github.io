@@ -2,8 +2,8 @@
 title: ArrayList-Part1
 url: 145.html
 id: 145
-categories:
-  - Java
+category:
+- Java
 date: 2018-06-13 09:35:49
 tags:
 ---

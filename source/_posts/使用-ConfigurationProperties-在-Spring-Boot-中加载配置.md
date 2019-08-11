@@ -3,11 +3,11 @@ title: 使用 @ConfigurationProperties 在 Spring Boot 中加载配置
 date: 2019-06-30 18:50:57
 toc: true
 category:
-	- Spring Boot
-	- Java
+- Spring Boot
+- Java
 tags:
-	- Spring Boot
-	- Java
+- Spring Boot
+- Java
 ---
 使用 Spring Boot 加载配置文件的配置非常便利，我们只需要使用一些注解配置一下就能很方便地加载配置项了。今天我们谈一谈 `ConfigurationProperties` 注解的使用，`ConfigurationProperties`可以把配置文件中有相同前缀的配置在一个配置类中直接省去相同前缀进行读取，甚至还可以将相同前缀的配置自动封装成实体类。
 <!--more-->

@@ -1,14 +1,21 @@
 ---
-title: {{ title }}
-date: {{ date }}
+title: Automatic Investment Plan
 toc: true
+date: 2019-08-11 21:08:04
 tags:
 category:
-thumbnail: 
+thumbnail:
 ---
-
+Automatic Investment Plan
 
 <!--more-->
+
+
+
+Time | Price | Amount | Volume
+---|--- | --- | ---
+2019年08月11日20:26:20 | 80045 | 1000 CNY |0.012492
+
 
 
 ---
