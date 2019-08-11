@@ -10,11 +10,20 @@ Automatic Investment Plan
 
 <!--more-->
 
+### USDT
+|	Time | Price | Amount | Volume	|
+|	---|	--- 	| 	--- 	| 	---		|
+2019-08-11 21:23:56 | 6.99  | 2000 CNY | 286.123032
 
+### BTC
 
-Time | Price | Amount | Volume
----|--- | --- | ---
-2019年08月11日20:26:20 | 80045 | 1000 CNY |0.012492
+|	Time | Price | Amount | Volume	|
+|	---|	--- 	| 	--- 	| 	---		|
+2019-08-11 20:06:49 | 80045 | 1000 CNY |0.012492
+
+> 2019-08-11 21:41:25 
+> order：
+> 9000.01 USDT buy 0.015 BTC （135.00015000 USDT） 
 
 
 
