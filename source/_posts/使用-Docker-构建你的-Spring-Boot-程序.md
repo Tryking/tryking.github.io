@@ -54,7 +54,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     testCompile("org.springframework.boot:spring-boot-starter-test")
 }
-``` 
+```
 
 在 Gradle 构建文件中，我们使用了 [Spring Boot Gradle 插件](https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/html/)，它可以提供很多便利的特性：
 * 它可以收集环境变量中的所有的 jar，然后将它们构建成一个简单的，可运行的“über-jar”。（über 是一个德文单词，可理解为总）这使得执行和传输服务变得更加方便。
