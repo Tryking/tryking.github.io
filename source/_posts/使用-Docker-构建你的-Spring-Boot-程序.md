@@ -21,6 +21,7 @@ Docker 是一个具有“社交”方面的 Linux 容器管理工具，它允许
 在此之前，你需要安装一下 Docker。（[Docker](https://docs.docker.com/installation/#installation)）如果你使用的系统是 Windows，你需要安装 Docker Desktop。（[Docker Desktop](https://www.docker.com/products/docker-desktop)）
 
 ## 创建 Gradle 工程
+
 首先，我们使用 IDEA 创建一个 Gradle 工程。然后，在 `build.gradle` 文件中加入以下内容：
 
 ```groovy
@@ -54,6 +55,7 @@ dependencies {
     testCompile("org.springframework.boot:spring-boot-starter-test")
 }
 ``` 
+
 在 Gradle 构建文件中，我们使用了 [Spring Boot Gradle 插件](https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/html/)，它可以提供很多便利的特性：
 * 它可以收集环境变量中的所有的 jar，然后将它们构建成一个简单的，可运行的“über-jar”。（über 是一个德文单词，可理解为总）这使得执行和传输服务变得更加方便。
 * 它会搜索 `public static void main()` 方法，并将它标记为一个可运行的类。
