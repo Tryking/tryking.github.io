@@ -107,3 +107,14 @@ deploy:
   branch: master
   # message: use default
 
+# hexo-renderer-marked
+marked:
+  gfm: true
+  pedantic: false
+  breaks: true
+  smartLists: true
+  smartypants: true
+  modifyAnchors: ''
+  autolink: true
+  sanitizeUrl: false
+  headerIds: true
