@@ -12,7 +12,7 @@ thumbnail:
 
 <!--more-->
 
-* 如果我们在 log4j2.xml 中使用如下配置，会报错。
+## 如果我们在 log4j2.xml 中使用如下配置，会报错。
 
 ```xml
  <Appenders>
@@ -57,7 +57,7 @@ thumbnail:
 也是因为我们使用了不正当的标签 `Layout`, `Filter`，log4j2 已经不使用这些标签了，我们需要直接将其替换为 type 对应的标签，而不是使用 type 来指定具体的 `Layout`  和 `Filter`。
 
 
-* 如果我们的 PatternLayout  设置为 `%m%n`，则在打印异常日志时每行的末尾会将 jar 的信息打出来，比如：
+## 如果我们的 PatternLayout  设置为 `%m%n`，则在打印异常日志时每行的末尾会将 jar 的信息打出来，比如：
 
 ```log
 ...
