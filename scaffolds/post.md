@@ -12,7 +12,7 @@ thumbnail:
 
 
 ---
-> **标题**：[{{title}}](https://dengkaiting.com/2019/00/00/{{ title }}/)
+> **标题**：[Title](https://dengkaiting.com/)
 > **作者**：[末日没有进行曲](https://dengkaiting.com/)
 > **链接**：[link](https://dengkaiting.com/)
 > **时间**：{{ date }}
