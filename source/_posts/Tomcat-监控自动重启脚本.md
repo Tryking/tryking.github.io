@@ -12,6 +12,10 @@ thumbnail:
 
 ```bash
 #!/bin/sh
+# monitor_tomcat.sh
+# crontab 
+# */5 * * * * bash /home/tryking/crontab/monitor_tomcat.sh >> /home/tryking/crontab/crontab.log 2>&1
+# Please put tryking to /etc/cron.allow (allow user tryking enable crontab)
 
 tomcat_pid=$(ps aux | grep catalina.home | grep -v grep | awk '{print $2}')
 tomcat_start_script_file=/home/tryking/crontab/tomcat_start_script_file
@@ -34,6 +38,7 @@ Monitor() {
 }
 
 Monitor >> $monicot_log_file  
+
 ```
 
 ---
