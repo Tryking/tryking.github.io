@@ -2,12 +2,15 @@
 title: 'Gradle 中的 compile, implementation, api 有什么区别？'
 toc: true
 date: 2019-09-01 18:07:40
-tags:
+tags: 
+- Gradle
+- Java
 category:
+- Gradle
 thumbnail:
 ---
 
-在 Gradle 中，我们应用一个 library 的时候，一般会使用 `compile`, `implementation`, `api` 等这几种方式，你知道什么时候该用什么吗？
+在 Gradle 中，我们引用一个 library 依赖的时候，一般会使用 `compile`, `implementation`, `api` 等这几种方式，你知道什么时候该用什么吗？
 <!--more-->
 
 # 区别
@@ -53,7 +56,7 @@ public class CSecret {
 
 ```Java
 public class BContent {
-	private static String content = CSecret. getSecret();	public static String getContent() {    	return "My content: " + content;	}
+	private static String content = CSecret.getSecret();	public static String getContent() {    		return "My content: " + content;	}
 }    
 ```
 
