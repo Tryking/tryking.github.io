@@ -32,7 +32,7 @@ systemProp.http.proxyPort=1087
 把这几行配置注释掉，重新 build 项目。嗯，阿里云代理库的速度还是可以的。
 
 ---
-> **标题**：[Title](https://dengkaiting.com/)
+> **标题**：[为啥我的 Gradle 一直 build 不成功？](https://dengkaiting.com/)
 > **作者**：[末日没有进行曲](https://dengkaiting.com/)
 > **链接**：[link](https://dengkaiting.com/)
 > **时间**：2020-05-30
