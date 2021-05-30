@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+<title>Json Schema 是什么？ - 末日没有进行曲</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+    <meta name="description" content="简单说，Json Schema 其实就是一个标准的 Json 串，它以一个 Json 串来描述我们需要的数据规范，并且支持注释以及验证 Json 文档，即我们可以用 Json Schema 来验证所给的 Json 串是否满足我们需要的数据格式规范。">
+<meta name="keywords" content="Json Schema,API">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Json Schema 是什么？">
+<meta property="og:url" content="http://yoursite.com/2019/06/25/Json-Schema-是什么？/index.html">
+<meta property="og:site_name" content="末日没有进行曲">
+<meta property="og:description" content="简单说，Json Schema 其实就是一个标准的 Json 串，它以一个 Json 串来描述我们需要的数据规范，并且支持注释以及验证 Json 文档，即我们可以用 Json Schema 来验证所给的 Json 串是否满足我们需要的数据格式规范。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/images/og_image.png">
+<meta property="og:updated_time" content="2021-05-30T10:27:23.094Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Json Schema 是什么？">
+<meta name="twitter:description" content="简单说，Json Schema 其实就是一个标准的 Json 串，它以一个 Json 串来描述我们需要的数据规范，并且支持注释以及验证 Json 文档，即我们可以用 Json Schema 来验证所给的 Json 串是否满足我们需要的数据格式规范。">
+<meta name="twitter:image" content="http://yoursite.com/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+<script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?4d29c8582767154d4e12ab2007b9f1c7";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    
+    
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+    
+    
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+    
+    
+    
+        <script type="text/javascript" src="//js.users.51.la/20168017.js"></script>
+    
+
+
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<!--<body class="is-2-column">-->
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                末日没有进行曲
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item" href="/">Home</a>
+                
+                <a class="navbar-item" href="/archives">Archives</a>
+                
+                <a class="navbar-item" href="/categories">Categories</a>
+                
+                <a class="navbar-item" href="/tags">Tags</a>
+                
+                <a class="navbar-item" href="/about">About</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    
+                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="https://github.com/Tryking">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                
+                <a class="navbar-item search" title="Search" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-06-25T14:29:25.000Z">2019-06-25</time>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    6 minutes read (About 933 words)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span> visits
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                Json Schema 是什么？
+            
+        </h1>
+        <div class="content">
+            <p>简单说，<code>Json Schema</code> 其实就是一个标准的 Json 串，它以一个 Json 串来描述我们需要的数据规范，并且支持注释以及验证 Json 文档，即我们可以用 Json Schema 来验证所给的 Json 串是否满足我们需要的数据格式规范。 </p>
+<a id="more"></a>
+
+<p>同样能用来表示数据的还有一种格式 XML，为什么 Json Schema 偏偏要用 Json 来进行表示数据呢？对于机器，其实这两种方式是没有区别的，机器只要你把标准给了它，它都能用很快的速度识别出来（相对于我们人），但是 XML 对于人识别就太不友好了。比如，假设我们需要描述一个班级的两个人：</p>
+<p>对于 XML：</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;class&gt;</span><br><span class="line">	&lt;name&gt;实验1班&lt;/name&gt;</span><br><span class="line">	&lt;no&gt;1801&lt;/no&gt;</span><br><span class="line">	&lt;students&gt;</span><br><span class="line">	    &lt;student&gt;</span><br><span class="line">	        &lt;name&gt;张三&lt;/name&gt;</span><br><span class="line">	        &lt;sex&gt;女&lt;/sex&gt;</span><br><span class="line">	    &lt;/student&gt;</span><br><span class="line">	    &lt;student&gt;</span><br><span class="line">	        &lt;name&gt;李四&lt;/name&gt;</span><br><span class="line">	        &lt;sex&gt;男&lt;/sex&gt;</span><br><span class="line">	    &lt;/student&gt;</span><br><span class="line">	&lt;/students&gt;</span><br><span class="line">&lt;/class&gt;</span><br></pre></td></tr></table></figure>
+
+<p>使用 Json：</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;class&quot;: &#123;</span><br><span class="line">    &quot;name&quot;: &quot;实验1班&quot;,</span><br><span class="line">    &quot;no&quot;: &quot;1801&quot;,</span><br><span class="line">    &quot;students&quot;: &#123;</span><br><span class="line">      &quot;student&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;name&quot;: &quot;张三&quot;,</span><br><span class="line">          &quot;sex&quot;: &quot;女&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;name&quot;: &quot;李四&quot;,</span><br><span class="line">          &quot;sex&quot;: &quot;男&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>有没有觉得 Json 立马秒杀 XML？这里可能感觉还不是很明显，这是因为层级比较少，层级再多之后，Json 的优势立马就显现出来了。</p>
+<p>Json Schema 在我们平时的工作中最常用的有两个，一个就是上面说的用于验证 Json 串的合法性；另一个就是用于定义我们的 API，定义好 API 后，我们可以直接用工具生成我们的 API，这样利于我们对 API 的维护。</p>
+<h2 id="验证-Json-串的合法性"><a href="#验证-Json-串的合法性" class="headerlink" title="验证 Json 串的合法性"></a>验证 Json 串的合法性</h2><p>比如，我们定义的 Json Schema 为：</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;$schema&quot;: &quot;http://json-schema.org/draft-04/schema#&quot;,</span><br><span class="line">    &quot;title&quot;: &quot;Product&quot;,</span><br><span class="line">    &quot;description&quot;: &quot;A product from Acme&apos;s catalog&quot;,</span><br><span class="line">    &quot;type&quot;: &quot;object&quot;,</span><br><span class="line">    &quot;properties&quot;: &#123;</span><br><span class="line">        &quot;id&quot;: &#123;</span><br><span class="line">            &quot;description&quot;: &quot;The unique identifier for a product&quot;,</span><br><span class="line">            &quot;type&quot;: &quot;integer&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;name&quot;: &#123;</span><br><span class="line">            &quot;description&quot;: &quot;Name of the product&quot;,</span><br><span class="line">            &quot;type&quot;: &quot;string&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;price&quot;: &#123;</span><br><span class="line">            &quot;type&quot;: &quot;number&quot;,</span><br><span class="line">            &quot;minimum&quot;: 0,</span><br><span class="line">            &quot;exclusiveMinimum&quot;: true</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;required&quot;: [&quot;id&quot;, &quot;name&quot;, &quot;price&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在上述 Json Schema 中</p>
+<ul>
+<li>最上面的 <code>$shcema</code> 是一个关键字，它表示我们所定义的 Schema 和     <code>http://json-schema.org/draft-04/schema#</code>（Json Schema 的 v4 规范）是一致的</li>
+<li><code>title</code> 指的是标题。</li>
+<li><code>description</code> 用于描述我们所定义的 Schema，上述表明我们定义的是一个来自 Acme 目录的商品。</li>
+<li><code>type</code> 表示我们定义的是一个 <code>object</code> 对象。</li>
+<li><code>properties</code> 中就是 Schema 的属性了，这里面的是核心。我们可以看到该 Schema 一共有三个属性，分别是 id<code>(integer)</code>, name<code>(string)</code>, prince<code>(number)</code>。</li>
+<li>最后的 <code>required</code> 表明三个属性都是必须的。</li>
+</ul>
+<p>给定了上述 Schema，我们就可以验证给定的 Json 是否是合规的了。比如：</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;id&quot;: 1,</span><br><span class="line">  &quot;name&quot;: &quot;watermelon&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>显然，这个 Json 缺少了一个属性 price，所以它不合规。</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;id&quot;: 1,</span><br><span class="line">  &quot;name&quot;: [&quot;knife&quot;, &quot;spoon&quot;],</span><br><span class="line">  &quot;price&quot;: 4</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个 Json 的 name 属性是一个数组，我们上面规定 name 只能是 String，显然这个也不是合规的。</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;id&quot;: 1,</span><br><span class="line">  &quot;name&quot;: &quot;watermelon&quot;,</span><br><span class="line">  &quot;price&quot;: 4</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个，就满足了上面定义的所有规则，因此这个是一个合规的 Json。</p>
+<h2 id="定义-API"><a href="#定义-API" class="headerlink" title="定义 API"></a>定义 API</h2><p>其实，使用我们上面的 Json Schema 便能进行 API 的定义了，只不过是定义 API 的话可能还需要更多的支持。比如，对于 Java，我们需要能实现 extend 等关键字的支持，还需要能进行枚举 enum 类型等的定义。这里只简单使用上述的内容显然不够了，我们还需要扩充一些关键字的使用。</p>
+<p>目前，大家使用最多的将 Json Schema 转换为 Java Bean 的一个库是 <a href="https://github.com/joelittlejohn/jsonschema2pojo" target="_blank" rel="noopener">jsonschema2pojo</a>，后面我将依托这个库支持的内容对 Json Schema 的格式进行深入解析，此库支持的也是比较通用的。</p>
+
+        </div>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/API/">API</a>, <a class="has-link-grey -link" href="/tags/Json-Schema/">Json Schema</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="menu-label has-text-centered">Like this article? Support the author with</h3>
+        <div class="buttons is-centered">
+            
+                
+<a class="button is-info donate">
+    <span class="icon is-small">
+        <i class="fab fa-alipay"></i>
+    </span>
+    <span>Alipay</span>
+    <div class="qrcode"><img src="http://media.dengkaiting.com/no_thanks.jpg" alt="Alipay"></div>
+</a>
+
+                
+                
+<a class="button is-success donate">
+    <span class="icon is-small">
+        <i class="fab fa-weixin"></i>
+    </span>
+    <span>Wechat</span>
+    <div class="qrcode"><img src="http://media.dengkaiting.com/no.gif" alt="Wechat"></div>
+</a>
+
+                
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2019/06/25/使用-Json-Schema-定义-API/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">使用 Json Schema 定义 API</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019/06/09/如何让-Hexo-稳定运行/">
+                <span class="level-item">如何让 Hexo 在服务器稳定运行</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">Comments</h3>
+        
+<div id="lv-container" data-id="city" data-uid="MTAyMC80NDYzMS8yMTE2MA==">
+    <script type="text/javascript">
+        (function(d, s) {
+            var j, e = d.getElementsByTagName(s)[0];
+
+            if (typeof LivereTower === 'function') { return; }
+
+            j = d.createElement(s);
+            j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+            j.async = true;
+
+            e.parentNode.insertBefore(j, e);
+        })(document, 'script');
+    </script>
+    <noscript> Please activate JavaScript for write a comment in LiveRe</noscript>
+</div>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left is-sticky">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered">
+                <div>
+                    
+                        <figure class="image is-128x128 has-mb-6">
+                            <img class="is-rounded" src="/images/avatar.jpeg" alt="Tryking">
+                        </figure>
+                    
+                    
+                    <p class="is-size-4 is-block">
+                        Tryking
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        末日没有进行曲
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>China</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Posts
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        52
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Categories
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        9
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Tags
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        17
+                    </p>
+                </div>
+            </div>
+        </nav>
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/Tryking" target="_blank">
+                Follow</a>
+        </div>
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Github" href="https://github.com/Tryking">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="CSDN" href="https://blog.csdn.net/sinat_18268881">
+                
+                <i class="fab fa-cuttlefish"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="RSS" href="/">
+                
+                <i class="fas fa-rss"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    末日没有进行曲
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2021 Tryking&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                <br>
+                备案号：<a href="http://beian.miit.gov.cn" target="_blank">晋ICP备16005436号-2</a>
+                <br>
+                <span id="busuanzi_container_site_uv">
+                Visited by <span id="busuanzi_value_site_uv">0</span> users, 
+                <span id="busuanzi_value_site_pv">0</span> visits
+                </span>
+                
+                
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("en");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="Back to Top" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/js/clipboard.js" defer></script>
+    
+
+    
+    
+    
+
+    
+    
+    
+
+
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+
+    <!--背景线条-->
+    <!--<script type="text/javascript" color="0,0,255" opacity='0.7' zIndex="-1" count="99" src="dist/canvas-nest.js"></script>-->
+    <!--<script type="text/javascript" color="0,0,255" opacity='0.7' zIndex="-1" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>-->
+</body>
+</html>

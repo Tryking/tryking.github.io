@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+<title>使用 ELK 监控 Tomcat Access Log - 末日没有进行曲</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+    <meta name="description" content="为什么要监控 Tomcat Access Log 呢？因为这里面保存了太多有用的信息了。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 ELK 监控 Tomcat Access Log">
+<meta property="og:url" content="http://yoursite.com/2019/09/17/使用-ELK-监控-Tomcat-Access-Log/index.html">
+<meta property="og:site_name" content="末日没有进行曲">
+<meta property="og:description" content="为什么要监控 Tomcat Access Log 呢？因为这里面保存了太多有用的信息了。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/images/og_image.png">
+<meta property="og:updated_time" content="2021-05-30T10:27:23.100Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用 ELK 监控 Tomcat Access Log">
+<meta name="twitter:description" content="为什么要监控 Tomcat Access Log 呢？因为这里面保存了太多有用的信息了。">
+<meta name="twitter:image" content="http://yoursite.com/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+<script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?4d29c8582767154d4e12ab2007b9f1c7";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    
+    
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+    
+    
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+    
+    
+    
+        <script type="text/javascript" src="//js.users.51.la/20168017.js"></script>
+    
+
+
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<!--<body class="is-2-column">-->
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                末日没有进行曲
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item" href="/">Home</a>
+                
+                <a class="navbar-item" href="/archives">Archives</a>
+                
+                <a class="navbar-item" href="/categories">Categories</a>
+                
+                <a class="navbar-item" href="/tags">Tags</a>
+                
+                <a class="navbar-item" href="/about">About</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    
+                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="https://github.com/Tryking">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="Search" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-09-17T13:47:11.000Z">2019-09-17</time>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    8 minutes read (About 1252 words)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span> visits
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                使用 ELK 监控 Tomcat Access Log
+            
+        </h1>
+        <div class="content">
+            <p>为什么要监控 Tomcat Access Log 呢？因为这里面保存了太多有用的信息了。</p>
+<a id="more"></a>
+
+<h2 id="为什么要监控-Tomcat-Access-Log？"><a href="#为什么要监控-Tomcat-Access-Log？" class="headerlink" title="为什么要监控 Tomcat Access Log？"></a>为什么要监控 Tomcat Access Log？</h2><p>Tomcat Access Log 的展示信息在 <code>conf/server.xml</code> 中进行配置，默认配置如下：</p>
+<figure class="highlight plain hljs"><figcaption><span>server.xml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;Valve className=&quot;org.apache.catalina.valves.AccessLogValve&quot; directory=&quot;logs&quot;</span><br><span class="line">               prefix=&quot;localhost_access_log&quot; suffix=&quot;.txt&quot;</span><br><span class="line">               pattern=&quot;%h %l %u %t &amp;quot;%r&amp;quot; %s %b&quot; /&gt;</span><br></pre></td></tr></table></figure>
+
+<p>其中， 各个占位符的含义如下：</p>
+<table>
+<thead>
+<tr>
+<th>占位符</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>%h</td>
+<td>远程主机名</td>
+</tr>
+<tr>
+<td>%l</td>
+<td>远程逻辑 identd 用户名（总是返回 - ）</td>
+</tr>
+<tr>
+<td>%u</td>
+<td>远程用户身份验证</td>
+</tr>
+<tr>
+<td>%t</td>
+<td>请求的日期和时间</td>
+</tr>
+<tr>
+<td>%r</td>
+<td>请求的第一行，包括请求的方式，URL 以及 HTTP协议</td>
+</tr>
+<tr>
+<td>%s</td>
+<td>响应的 HTTP 状态代码</td>
+</tr>
+<tr>
+<td>%b</td>
+<td>发送的字节数，不包括 HTTP 头</td>
+</tr>
+</tbody></table>
+<p>除了这些默认的展位符外，比较常用的还有 </p>
+<table>
+<thead>
+<tr>
+<th>占位符</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>%D</td>
+<td>处理请求的时间（以毫秒为单位）</td>
+</tr>
+</tbody></table>
+<p>同时，我们在代码中写到 HTTP 头的信息同样也能在这里获取到，比如我们在 HTTP Header 中放入了一个 header-key，我们便可以在 server.xml 中使用 %{header-key} 进行获取，然后打印日志到 access log 中。</p>
+<p>可以看到，Access Log 中存放了很多有用的信息，如果我们能将这些信息利用起来，无疑对我们的业务排查是非常高效的。比如我们可以统计我们的请求的处理时间，响应成功率，发送 response 的大小等等。</p>
+<h2 id="如何进行监控"><a href="#如何进行监控" class="headerlink" title="如何进行监控"></a>如何进行监控</h2><p>其实直接使用 ELK 便可以进行监控，使用 <code>Logstash</code> 把对应的日志处理，然后放到 <code>ElasticSearch</code> 中，最后再用 <code>Kibana</code> 进行展示。但是对于生产环境来说， <code>Logstash</code> 还是比较耗性能的。比较理想的做法是使用 <code>Filebeat</code>。</p>
+<p><code>Filebeat</code> 属于 <code>Beats</code> 家族，<code>Beats</code> 是单用途数据托运平台。它们以轻量级代理的形式存在于服务器上，并将来自成百上千台机器的数据发送到 <code>Logstash</code> 或 <code>Elasticsearch</code>。<code>Filebeat</code> 也可以对数据进行处理，然后直接存入 ES，但是考虑到对机器性能的影响，我更喜欢它将原始数据直接发送到 <code>Logstash</code>（和 Filebeat 不在相同机器），然后用 <code>Logstash</code> 将数据处理并放入 <code>ES</code> 中。</p>
+<p>因此，监控的流程为 <code>Filebeat</code> 收集数据，将数据发送到 <code>Logstash</code>，然后 <code>Logstash</code> 对数据进行处理，并将处理后的数据发送到 <code>ES</code>，最后再用 <code>Kibana</code> 进行数据展示。</p>
+<h2 id="安装并配置-Filebeat"><a href="#安装并配置-Filebeat" class="headerlink" title="安装并配置 Filebeat"></a>安装并配置 Filebeat</h2><h3 id="下载并安装-Filebeat"><a href="#下载并安装-Filebeat" class="headerlink" title="下载并安装 Filebeat"></a>下载并安装 Filebeat</h3><figure class="highlight shell hljs"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.2.1-x86_64.rpm</span><br><span class="line">sudo rpm -vi filebeat-7.2.1-x86_64.rpm</span><br></pre></td></tr></table></figure>
+
+<h3 id="编辑配置文件"><a href="#编辑配置文件" class="headerlink" title="编辑配置文件"></a>编辑配置文件</h3><p>修改 <code>/etc/filebeat/filebeat.yml</code>，设置 Tomcat Access Log 位置以及 <code>Logstash</code> 的连接信息（需要和下一步中安装的 ELK 中的信息保持一致）。</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">#=========================== Filebeat inputs =============================</span><br><span class="line">filebeat.inputs:</span><br><span class="line"> </span><br><span class="line"># Each - is an input. Most options can be set at the input level, so</span><br><span class="line"># you can use different inputs for various configurations.</span><br><span class="line"># Below are the input specific configurations.</span><br><span class="line"> </span><br><span class="line">- type: log</span><br><span class="line"> </span><br><span class="line">  # Change to true to enable this input configuration.</span><br><span class="line">  enabled: true</span><br><span class="line"> </span><br><span class="line">  # Paths that should be crawled and fetched. Glob based paths.</span><br><span class="line">  paths:</span><br><span class="line">    # The Tomcat Access Log path</span><br><span class="line">    - /usr/local/apache-tomcat-8.5.41/logs/localhost_access_log*</span><br><span class="line"> </span><br><span class="line">...</span><br><span class="line">#----------------------------- Logstash output --------------------------------</span><br><span class="line">output.logstash:</span><br><span class="line">  # The Logstash hosts</span><br><span class="line">  hosts: [&quot;localhost:5044&quot;]</span><br></pre></td></tr></table></figure>
+
+<h3 id="启动-Filebeat"><a href="#启动-Filebeat" class="headerlink" title="启动 Filebeat"></a>启动 Filebeat</h3><figure class="highlight shell hljs"><figcaption><span>script</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo filebeat setup</span><br><span class="line">sudo service filebeat start</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装-ELK"><a href="#安装-ELK" class="headerlink" title="安装 ELK"></a>安装 ELK</h2><p>推荐使用 <code>docker</code>，参照 <a href="https://github.com/deviantony/docker-elk" target="_blank" rel="noopener">docker-elk</a>.</p>
+<h2 id="配置-Logstash"><a href="#配置-Logstash" class="headerlink" title="配置 Logstash"></a>配置 Logstash</h2><p>修改 ${logstash}/pipeline/logstash.conf 设置 filebeat 的信息: (input.beats.port 需要和 filebeat 中的保持一致，此设置是用来供 filebeat 传输数据的监听接口, output.elasticsearch.hosts/user/password 需要正确设置，elk-docker 中默认为 eleatic/changeme)</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line"> </span><br><span class="line">   beats &#123;</span><br><span class="line">        port =&gt; 5044</span><br><span class="line">        type =&gt; &quot;logs&quot;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">filter &#123;</span><br><span class="line"> </span><br><span class="line">    grok &#123;</span><br><span class="line">        match =&gt; &#123;  &quot;message&quot; =&gt; &quot;%&#123;IPORHOST:clientip&#125;%&#123;SPACE&#125;%&#123;USER:ident&#125;%&#123;SPACE&#125;%&#123;USER:auth&#125;%&#123;SPACE&#125;\[%&#123;HTTPDATE:timestamp&#125;\]%&#123;SPACE&#125;\&quot;(?:%&#123;WORD:verb&#125;%&#123;SPACE&#125;%&#123;NOTSPACE:request&#125;(?:%&#123;SPACE&#125;HTTP/%&#123;NUMBER:httpversion&#125;)?|%&#123;DATA:rawrequest&#125;)\&quot;%&#123;SPACE&#125;%&#123;NUMBER:response&#125;%&#123;SPACE&#125;(?:%&#123;NUMBER:bytes&#125;|-)(?:%&#123;SPACE&#125;(?:%&#123;NUMBER:duration&#125;|-)%&#123;SPACE&#125;(?:-|%&#123;NOTSPACE:header-key&#125;)%&#123;SPACE&#125;(?:-|%&#123;NOTSPACE:header-signature&#125;)|)&quot; &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    if &quot;_grokparsefailure&quot; not in [tags] &#123;</span><br><span class="line">        date &#123;</span><br><span class="line">            match =&gt; [ &quot;timestamp&quot; , &quot;dd/MMM/yyyy:HH:mm:ss Z&quot; ]</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        mutate &#123;</span><br><span class="line">           remove_field =&gt; [&quot;message&quot;]</span><br><span class="line">           convert =&gt; [&quot;bytes&quot;, &quot;integer&quot;]</span><br><span class="line">           convert =&gt; [&quot;duration&quot;, &quot;integer&quot;]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">output &#123;</span><br><span class="line">    elasticsearch &#123;</span><br><span class="line">        hosts =&gt; &quot;elasticsearch:9200&quot;</span><br><span class="line">        user =&gt; &quot;elastic&quot;</span><br><span class="line">        password =&gt; &quot;changeme&quot;</span><br><span class="line">        index =&gt; &quot;apache-access-log&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    stdout &#123; codec =&gt; rubydebug &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在匹配 tomcat access 日志中，我们修改了默认的 pattern，在此例中，我们的 tomcat  access log pattern 为</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;Valve className=&quot;org.apache.catalina.valves.AccessLogValve&quot; directory=&quot;logs&quot;               </span><br><span class="line">               prefix=&quot;localhost_access_log&quot; suffix=&quot;.txt&quot;</span><br><span class="line">               pattern=&quot;%h %l %u %t &amp;quot;%r&amp;quot;  %s %b %D  %&#123;header-key&#125;i  %&#123;header-signature&#125;i&quot; /&gt;</span><br></pre></td></tr></table></figure>
+
+<p>其中，<code>header-key</code> 和 <code>header-signature</code> 为我们在程序中加到 HTTP Header 中的属性，例如，以下为一条 log。</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1 - - [18/Aug/2019:18:22:40 -0700] &quot;POST /monitor/test HTTP/1.1&quot;  200 111 21  49c04731-3510-4020-b012-b24t64434ca4  412c473b-3550-4020-b012-b023064434ca4</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置-Kibana"><a href="#配置-Kibana" class="headerlink" title="配置 Kibana"></a>配置 Kibana</h2><p>接下来，我们的工作就完成了，当日志发生变动时，<code>Filebeat</code> 会将日志传输给 <code>Logstash</code>，<code>Logstash</code> 会根据我们定义的 Pattern 将日志进行装换，然后存入 <code>ElasticSearch</code>，我们在 <code>Kibana</code> 中刷新拿到 <code>ElasticSearch</code> 中的 index 就可以配置我们想要的报表了。</p>
+<hr>
+<blockquote>
+<p><strong>标题</strong>：<a href="https://dengkaiting.com/2019/09/17/使用-ELK-监控-Tomcat-Access-Log/" target="_blank" rel="noopener">使用 ELK 监控 Tomcat Access Log</a><br><strong>作者</strong>：<a href="https://dengkaiting.com/" target="_blank" rel="noopener">末日没有进行曲</a><br><strong>链接</strong>：<a href="https://dengkaiting.com/" target="_blank" rel="noopener">使用 ELK 监控 Tomcat Access Log</a><br><strong>时间</strong>：2019-09-17<br><strong>声明</strong>：本博客所有文章均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</blockquote>
+
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="menu-label has-text-centered">Like this article? Support the author with</h3>
+        <div class="buttons is-centered">
+            
+                
+<a class="button is-info donate">
+    <span class="icon is-small">
+        <i class="fab fa-alipay"></i>
+    </span>
+    <span>Alipay</span>
+    <div class="qrcode"><img src="http://media.dengkaiting.com/no_thanks.jpg" alt="Alipay"></div>
+</a>
+
+                
+                
+<a class="button is-success donate">
+    <span class="icon is-small">
+        <i class="fab fa-weixin"></i>
+    </span>
+    <span>Wechat</span>
+    <div class="qrcode"><img src="http://media.dengkaiting.com/no.gif" alt="Wechat"></div>
+</a>
+
+                
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2019/11/07/使用-PowerMockito-测试/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">使用 PowerMockito 测试</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019/09/01/Gradle-中的-compile-implementation-api-有什么区别？/">
+                <span class="level-item">Gradle 中的 compile, implementation, api 有什么区别？</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">Comments</h3>
+        
+<div id="lv-container" data-id="city" data-uid="MTAyMC80NDYzMS8yMTE2MA==">
+    <script type="text/javascript">
+        (function(d, s) {
+            var j, e = d.getElementsByTagName(s)[0];
+
+            if (typeof LivereTower === 'function') { return; }
+
+            j = d.createElement(s);
+            j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+            j.async = true;
+
+            e.parentNode.insertBefore(j, e);
+        })(document, 'script');
+    </script>
+    <noscript> Please activate JavaScript for write a comment in LiveRe</noscript>
+</div>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left is-sticky">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered">
+                <div>
+                    
+                        <figure class="image is-128x128 has-mb-6">
+                            <img class="is-rounded" src="/images/avatar.jpeg" alt="Tryking">
+                        </figure>
+                    
+                    
+                    <p class="is-size-4 is-block">
+                        Tryking
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        末日没有进行曲
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>China</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Posts
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        52
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Categories
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        9
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Tags
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        17
+                    </p>
+                </div>
+            </div>
+        </nav>
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/Tryking" target="_blank">
+                Follow</a>
+        </div>
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Github" href="https://github.com/Tryking">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="CSDN" href="https://blog.csdn.net/sinat_18268881">
+                
+                <i class="fab fa-cuttlefish"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="RSS" href="/">
+                
+                <i class="fas fa-rss"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+<div class="card widget" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                Catalogue
+            </h3>
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#为什么要监控-Tomcat-Access-Log？">
+        <span class="has-mr-6">1</span>
+        <span>为什么要监控 Tomcat Access Log？</span>
+        </a></li><li>
+        <a class="is-flex" href="#如何进行监控">
+        <span class="has-mr-6">2</span>
+        <span>如何进行监控</span>
+        </a></li><li>
+        <a class="is-flex" href="#安装并配置-Filebeat">
+        <span class="has-mr-6">3</span>
+        <span>安装并配置 Filebeat</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#下载并安装-Filebeat">
+        <span class="has-mr-6">3.1</span>
+        <span>下载并安装 Filebeat</span>
+        </a></li><li>
+        <a class="is-flex" href="#编辑配置文件">
+        <span class="has-mr-6">3.2</span>
+        <span>编辑配置文件</span>
+        </a></li><li>
+        <a class="is-flex" href="#启动-Filebeat">
+        <span class="has-mr-6">3.3</span>
+        <span>启动 Filebeat</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#安装-ELK">
+        <span class="has-mr-6">4</span>
+        <span>安装 ELK</span>
+        </a></li><li>
+        <a class="is-flex" href="#配置-Logstash">
+        <span class="has-mr-6">5</span>
+        <span>配置 Logstash</span>
+        </a></li><li>
+        <a class="is-flex" href="#配置-Kibana">
+        <span class="has-mr-6">6</span>
+        <span>配置 Kibana</span>
+        </a></li></ul>
+        </div>
+    </div>
+</div>
+
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    末日没有进行曲
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2021 Tryking&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                <br>
+                备案号：<a href="http://beian.miit.gov.cn" target="_blank">晋ICP备16005436号-2</a>
+                <br>
+                <span id="busuanzi_container_site_uv">
+                Visited by <span id="busuanzi_value_site_uv">0</span> users, 
+                <span id="busuanzi_value_site_pv">0</span> visits
+                </span>
+                
+                
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("en");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="Back to Top" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/js/clipboard.js" defer></script>
+    
+
+    
+    
+    
+
+    
+    
+    
+
+
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+
+    <!--背景线条-->
+    <!--<script type="text/javascript" color="0,0,255" opacity='0.7' zIndex="-1" count="99" src="dist/canvas-nest.js"></script>-->
+    <!--<script type="text/javascript" color="0,0,255" opacity='0.7' zIndex="-1" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>-->
+</body>
+</html>

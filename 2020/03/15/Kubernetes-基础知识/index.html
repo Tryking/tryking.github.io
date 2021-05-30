@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+<title>Kubernetes - 基础知识 - 末日没有进行曲</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+    <meta name="description" content="你知道如何创建一个 Kubernetes 集群吗？">
+<meta name="keywords" content="Kubernetes,Docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kubernetes - 基础知识">
+<meta property="og:url" content="http://yoursite.com/2020/03/15/Kubernetes-基础知识/index.html">
+<meta property="og:site_name" content="末日没有进行曲">
+<meta property="og:description" content="你知道如何创建一个 Kubernetes 集群吗？">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/images/og_image.png">
+<meta property="og:updated_time" content="2021-05-30T10:27:23.094Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kubernetes - 基础知识">
+<meta name="twitter:description" content="你知道如何创建一个 Kubernetes 集群吗？">
+<meta name="twitter:image" content="http://yoursite.com/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+<script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?4d29c8582767154d4e12ab2007b9f1c7";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    
+    
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+    
+    
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+    
+    
+    
+        <script type="text/javascript" src="//js.users.51.la/20168017.js"></script>
+    
+
+
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<!--<body class="is-2-column">-->
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                末日没有进行曲
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item" href="/">Home</a>
+                
+                <a class="navbar-item" href="/archives">Archives</a>
+                
+                <a class="navbar-item" href="/categories">Categories</a>
+                
+                <a class="navbar-item" href="/tags">Tags</a>
+                
+                <a class="navbar-item" href="/about">About</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    
+                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="https://github.com/Tryking">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="Search" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-03-15T03:03:26.000Z">2020-03-15</time>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    19 minutes read (About 2823 words)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span> visits
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                Kubernetes - 基础知识
+            
+        </h1>
+        <div class="content">
+            <p>你知道如何创建一个 <code>Kubernetes</code> 集群吗？</p>
+<a id="more"></a>
+<h1 id="创建一个-Kubernetes-集群"><a href="#创建一个-Kubernetes-集群" class="headerlink" title="创建一个 Kubernetes 集群"></a>创建一个 Kubernetes 集群</h1><h2 id="创建一个集群"><a href="#创建一个集群" class="headerlink" title="创建一个集群"></a>创建一个集群</h2><p>首先我们需要安装 minikube</p>
+<p>使用命令 <code>minikube version</code>，检查 <code>minikube</code> 是否安装成功。</p>
+<p>然后我们可以使用命令 <code>minikube start</code> 启动 <code>minikube</code>。</p>
+<p>等待 <code>minikube</code> 启动后，一个 <code>Kubernetes</code> 集群就已经运行起来了。</p>
+<h2 id="集群版本"><a href="#集群版本" class="headerlink" title="集群版本"></a>集群版本</h2><p>为了和 <code>Kubernetes</code> 进行交互，我们需要使用 <code>kubectl</code> 命令行。为了检测 <code>kubectl</code> 是否已经成功安装，我们可以使用命令 <code>kubectl version</code>.</p>
+<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl version</span><br><span class="line">Client Version: version.Info&#123;Major:<span class="hljs-string">"1"</span>, Minor:<span class="hljs-string">"17"</span>, GitVersion:<span class="hljs-string">"v1.17.3"</span>, GitCommit:<span class="hljs-string">"06ad960bfd03b39c8310aaf92d1e7c12ce618213"</span>, GitTreeState:<span class="hljs-string">"clean"</span>, BuildDate:<span class="hljs-string">"2020-02-11T18:14:22Z"</span>, GoVersion:<span class="hljs-string">"go1.13.6"</span>, Compiler:<span class="hljs-string">"gc"</span>, Platform:<span class="hljs-string">"linux/amd64"</span>&#125;</span><br><span class="line">Server Version: version.Info&#123;Major:<span class="hljs-string">"1"</span>, Minor:<span class="hljs-string">"17"</span>, GitVersion:<span class="hljs-string">"v1.17.3"</span>, GitCommit:<span class="hljs-string">"06ad960bfd03b39c8310aaf92d1e7c12ce618213"</span>, GitTreeState:<span class="hljs-string">"clean"</span>, BuildDate:<span class="hljs-string">"2020-02-11T18:07:13Z"</span>, GoVersion:<span class="hljs-string">"go1.13.6"</span>, Compiler:<span class="hljs-string">"gc"</span>, Platform:<span class="hljs-string">"linux/amd64"</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>根据上面的信息，我们可以看到 <code>kubectl</code> 已经配置成功了。 其中 <code>Client version</code> 指的是 <code>kubectl</code> 的版本，<code>Server version</code> 指的是安装在 master 节点的 <code>Kubernetes</code> 的版本。</p>
+<h2 id="查看集群详情"><a href="#查看集群详情" class="headerlink" title="查看集群详情"></a>查看集群详情</h2><p>我们还可以查看集群的详情。</p>
+<p><code>kubectl cluster-info</code> 查看集群的详情。</p>
+<p><code>kubectl get nodes</code> 这个命令展示了可以用于托管我们应用程序的所有节点。</p>
+<h1 id="部署一个-APP-应用"><a href="#部署一个-APP-应用" class="headerlink" title="部署一个 APP 应用"></a>部署一个 APP 应用</h1><p>一个 Pod 是 Kubernetes 应用中一个基本的执行单元。每个 Pod 都代表运行在你的集群中工作负载的一部分。</p>
+<h2 id="部署我们的-APP-应用"><a href="#部署我们的-APP-应用" class="headerlink" title="部署我们的 APP 应用"></a>部署我们的 APP 应用</h2><p>Kubernetes 部署 APP 的命令是 <code>kubectl create deployment</code>。我们需要提供部署的名字和 APP 的镜像位置（包含镜像在外部 Docker hub 仓库的全路径），例如：</p>
+<p><code>kubectl create deployment kubernetes-bootcamp --image=gcr.io/google-samples/kubernetes-bootcamp:v1</code></p>
+<p>部署完后，我们可以使用以下命令获取我们所有已经部署过的 APP。</p>
+<p><code>kubectl get deployments</code></p>
+<h2 id="查看我们的-APP-应用"><a href="#查看我们的-APP-应用" class="headerlink" title="查看我们的 APP 应用"></a>查看我们的 APP 应用</h2><p>运行在 Kubernetes 内部的 Pods 相当于运行在一个私有的、独立的网络中。默认情况下，各个 Pod 之间以及在相同 Kubernetes 集群中的服务是可见的，但是对于外部网络不可见。我们使用 <code>kubectl</code>的命令可以通过 API endpoint 来和我们的应用进行交互。</p>
+<p>后面我们会学习如何暴露应用给外部的 Kubernetes 集群。</p>
+<p><code>kubectl proxy</code> 命令可以创建一个代理，这将可以把通信转发到集群内的私有网络。当按下 <code>Control+C</code> 时，代理可以被终端。当代理工作的时候，界面不会有任何输出。</p>
+<p>创建好代理后，我们就可以直接访问我们刚刚部署的应用服务了。</p>
+<h1 id="探索应用"><a href="#探索应用" class="headerlink" title="探索应用"></a>探索应用</h1><p>当我们创建一个应用部署时，<code>Kubernetes</code> 会创建一个 <code>Pod</code> 来管理应用实例。<code>Pod</code> 是 <code>Kubernates</code> 用来表示拥有一个或多个应用实例容器（比如 <code>docker</code> 或者 <code>rkt</code>）的一个组的概念，这些容器之间共享资源。这些资源包括：</p>
+<ul>
+<li>共享存储，作为存储卷</li>
+<li>网络，作为一个独立的集群 IP 地址</li>
+<li>有关如何运行每个容器的信息，比如容器镜像版本或者要使用特定的端口</li>
+</ul>
+<p><code>Pod</code> 为特定于应用程序的 “逻辑主机” 建模，并且可以包含相对紧密耦合的不同应用程序容器。例如，一个 <code>Pod</code> 可能同时包含带有 Node.js 应用程序的容器以及一个不同的容器，该容器将提供要有 Node.js Web 服务器发布的数据。 <code>Pod</code> 中的容器之间共享一个 IP 地址和端口空间，它们始终位于同一位置并共同调度，并运行在同一节点的共享上线文中。</p>
+<p><code>Pod</code> 是 <code>Kubernetes</code> 平台上的原子单元。当我们在 <code>Kubernetes</code> 上创建一个部署时，部署会创建包含一些容器的一个 <code>Pod</code>（与直接创建容器相对立）。每个 <code>Pod</code> 都绑定到计划的节点上，并保持在那里，直到终止（根据重新启动策略）或删除为止。如果节点发生故障，<code>Kubernetes</code>会在集群中其他可用节点上调度相同的 <code>Pod</code>。</p>
+<h2 id="Nodes"><a href="#Nodes" class="headerlink" title="Nodes"></a>Nodes</h2><p><code>Pod</code> 始终运行在 <code>Node</code> 上。<code>Node</code> 是 <code>Kubernetes</code> 中的工作机，可以是虚拟机或者物理机，这具体取决于集群。每个 <code>Node</code>由主 <code>Node</code> 管理。一个 <code>Node</code> 可以有多个 <code>Pod</code>， <code>Kubernetes</code> 中的 Master 会自动处理跨集群中所有 <code>Node</code> 调度 <code>Pod</code> 的过程。<code>Master</code> 的自动调节会考虑每个 <code>Node</code> 上的可用资源。</p>
+<p>每个 <code>Kubernetes</code> <code>Node</code> 至少会运行：</p>
+<ul>
+<li><code>Kubelet</code>， 一个负责 <code>Kubernetes</code> <code>Master</code> 与 <code>Node</code> 之间通信的组件；它会管理 <code>Pod</code> 和在机器上运行的容器。</li>
+<li>容器运行时（比如 <code>Docker</code>, <code>rkt</code>）。它负责从注册表中提取容器镜像，解压缩容器并运行应用程序。</li>
+</ul>
+<p><img src="https://d33wubrfki0l68.cloudfront.net/5cb72d407cbe2755e581b6de757e0d81760d5b86/a9df9/docs/tutorials/kubernetes-basics/public/images/module_03_nodes.svg" alt></p>
+<h2 id="使用-Kubectl-进行故障排查"><a href="#使用-Kubectl-进行故障排查" class="headerlink" title="使用 Kubectl 进行故障排查"></a>使用 <code>Kubectl</code> 进行故障排查</h2><p>常用的 <code>Kubectl</code> 命令有：</p>
+<ul>
+<li><code>kubectl get</code> 列出资源</li>
+<li><code>kubectl describe</code> 显示有关资源的详细信息</li>
+<li><code>kubectl log</code> 从容器中的容器中打印日志</li>
+<li><code>kubectl exec</code> 在容器中的容器上执行命令</li>
+</ul>
+<p>我们可以使用这些命令来查看应用程序的部署时间，它们的当前状态，运行的位置以及它们的配置。</p>
+<h1 id="使用服务公开应用"><a href="#使用服务公开应用" class="headerlink" title="使用服务公开应用"></a>使用服务公开应用</h1><h2 id="Kubernetes-服务概述"><a href="#Kubernetes-服务概述" class="headerlink" title="Kubernetes 服务概述"></a>Kubernetes 服务概述</h2><p><code>Kubernetes</code> 中的 <code>Pods</code> 是会死亡的。实际上 <code>Pods</code> 是有生命周期的。当一个工作 Node 死亡了，运行在其上的 <code>Pods</code>就跟着丢失了。然后 <code>ReplicaSet</code> 可能会通过创建新的 <code>Pods</code> 来动态地将集群驱动回所需的状态，以保持应用程序正常运行。现在，假设有一个具有3个副本的图像处理后端，这些副本是可以交换的。但是对于前段系统来说，我们不应该关心后端的副本，即使 Pod 丢失并重新创建。也就是说，Kubernetes 集群中的每个 Pod 都有一个唯一的 IP 地址，即使是同一个节点上的 Pod 也是一样，因此我们需要一种自动协调 Pod 之前的方法，以便应用程序能持续运行。</p>
+<p>Kubernetes 中的服务是一种抽象，它定义了 Pod 的逻辑集合和访问 Pod 的策略。服务使从属 Pod 之间的松耦合成为可能。像所有 Kubernetes 对象一样，使用 YAML 或 JSON 定义服务。服务所针对的 Pod 集合通常由 LabelSelector 决定。</p>
+<p>尽管每个 Pod 都有一个唯一的 IP 地址，但是如果没有 Service，这些 IP 不会暴露在集群外部。Service 允许应用程序接收流量。通过 <code>type</code> 在 <code>ServiceSpec</code> 中指定可以以不同的方式公开服务：</p>
+<ul>
+<li>ClusterIP（默认）- 在群集的内部 IP 上公开服务，这种类型使得只能从群集内访问服务。</li>
+<li>NodePort - 使用 NAT 在群集中每个选定节点的相同端口上公开服务。使得可以使用 <code>&lt;NodeIP&gt;:&lt;NodePort&gt;</code>从群集外部访问服务。它是 ClusterIP的超集。</li>
+<li>LoadBalancer - 在当前云中创建一个外部负载平衡器（如果支持），并为该服务分配一个固定的外部 IP。它是 NodePort 的超集。</li>
+<li>ExternalName - <code>externalName</code> 通过返回具有该名称的 CNAME 记录，使用任意名称（在规定范围中指定）公开服务。它不使用代理，这种类型需要 v1.7 以上的 <code>kube-dns</code>。</li>
+</ul>
+<h2 id="Services-和-Labels"><a href="#Services-和-Labels" class="headerlink" title="Services 和 Labels"></a>Services 和 Labels</h2><p><code>Service</code> 在一组 <code>Pod</code> 之前路由流量。<code>Service</code> 是允许 <code>Pod</code> 在 <code>Kubernetes</code> 中死亡和复制交叉而又不影响应用程序的一个概念。<code>Kubernetes Services</code> 处理在依赖 <code>Pod</code> （例如应用程序中的前端和后端组件）之间的发现和路由。</p>
+<p><code>Service</code>通过 <code>labels</code> 和 <code>selectors</code>来匹配一组 <code>Pods</code>，这是一组原语，其允许对 Kubernetes 中的对象进行逻辑操作。<code>labels</code> 是附加在对象上的键值对，可以多种方式使用：</p>
+<ul>
+<li>指定用于开发，测试和生产环境的对象</li>
+<li>嵌入版本标签</li>
+<li>使用 label 对对象进行分类</li>
+</ul>
+<p><code>labels</code> 可以在创建时或者创建完成后附加到对象，并且可以随时对它们进行修改。</p>
+<h1 id="运行应用程序的多个实例"><a href="#运行应用程序的多个实例" class="headerlink" title="运行应用程序的多个实例"></a>运行应用程序的多个实例</h1><h2 id="扩缩（Scaling）应用程序"><a href="#扩缩（Scaling）应用程序" class="headerlink" title="扩缩（Scaling）应用程序"></a>扩缩（Scaling）应用程序</h2><p>在之前的模块中，我们创建了一个 Deployment，然后通过 Service 让其可以公开访问。Deployment 仅为跑这个应用程序创建了一个 Pod。当流量增加时，我们需要扩容应用程序以满足用户需求。</p>
+<p>扩缩（Scaling）是通过改变 Deployment 中的副本数量来实现的。</p>
+<p>在运行 <code>kubectl run</code> 命令时，可以通过设置 –replicas 参数来设置 Deploy 的副本数量。</p>
+<h2 id="扩缩概述"><a href="#扩缩概述" class="headerlink" title="扩缩概述"></a>扩缩概述</h2><p>扩缩 Deployment 将创建新的 Pods，并将资源调度请求分配到有可用资源的节点上，收缩会将 Pods 的数量减少至所需的状态。 Kubernetes 还支持 Pods 的自动缩放。</p>
+<p>运行应用程序的多个实例需要在它们之间分配流量。服务（Service）有一种负载均衡器类型，它可以将网络流量均衡分配到外部可以访问的 Pods 上。Service 将会一直通过端点来监视 Pods 的运行，保证流量只分配到可用的 Pods 上。</p>
+<h1 id="指定滚动更新"><a href="#指定滚动更新" class="headerlink" title="指定滚动更新"></a>指定滚动更新</h1><h2 id="更新应用程序"><a href="#更新应用程序" class="headerlink" title="更新应用程序"></a>更新应用程序</h2><p>用户希望应用程序始终可用，而开发人员则需要每天多次部署它们的新版本。在 Kubernetes 中，这些可以通过滚动更新（Rolling Updates）来完成。滚动更新允许通过使用新的实例逐步更新 Pod 实例，零停机进行 Deployment 更新。新的 Pod 将在具有可用资源的 Node 上进行调度。</p>
+<p>在前面的模块中，我们将应用程序扩展为运行多个实例。这是在不影响应用程序可用性的情况下执行更新的要求。默认情况下，更新期间不可用的 Pod 的最大值和可以创建 Pod 数都是 1 。这两个选项都可以配置为（Pod）数字或百分比。在 Kubernetes 中，更新时经过版本控制的，任何 Deployment 更新都可以恢复到以前的（稳定）版本。</p>
+<hr>
+<blockquote>
+<p><strong>标题</strong>：<a href="https://dengkaiting.com/" target="_blank" rel="noopener">Kubernetes - 创建一个 Kubernetes 集群</a><br><strong>作者</strong>：<a href="https://dengkaiting.com/" target="_blank" rel="noopener">末日没有进行曲</a><br><strong>链接</strong>：<a href="https://dengkaiting.com/" target="_blank" rel="noopener">link</a><br><strong>时间</strong>：2020-03-15<br><strong>声明</strong>：本博客所有文章均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</blockquote>
+
+        </div>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/Docker/">Docker</a>, <a class="has-link-grey -link" href="/tags/Kubernetes/">Kubernetes</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="menu-label has-text-centered">Like this article? Support the author with</h3>
+        <div class="buttons is-centered">
+            
+                
+<a class="button is-info donate">
+    <span class="icon is-small">
+        <i class="fab fa-alipay"></i>
+    </span>
+    <span>Alipay</span>
+    <div class="qrcode"><img src="http://media.dengkaiting.com/no_thanks.jpg" alt="Alipay"></div>
+</a>
+
+                
+                
+<a class="button is-success donate">
+    <span class="icon is-small">
+        <i class="fab fa-weixin"></i>
+    </span>
+    <span>Wechat</span>
+    <div class="qrcode"><img src="http://media.dengkaiting.com/no.gif" alt="Wechat"></div>
+</a>
+
+                
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2020/03/17/使用-Mockito-的一些坑/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">使用 Mockito 的一些坑</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2020/02/20/如何批量获取服务器的信息？/">
+                <span class="level-item">如何批量获取服务器的信息？</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">Comments</h3>
+        
+<div id="lv-container" data-id="city" data-uid="MTAyMC80NDYzMS8yMTE2MA==">
+    <script type="text/javascript">
+        (function(d, s) {
+            var j, e = d.getElementsByTagName(s)[0];
+
+            if (typeof LivereTower === 'function') { return; }
+
+            j = d.createElement(s);
+            j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+            j.async = true;
+
+            e.parentNode.insertBefore(j, e);
+        })(document, 'script');
+    </script>
+    <noscript> Please activate JavaScript for write a comment in LiveRe</noscript>
+</div>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left is-sticky">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered">
+                <div>
+                    
+                        <figure class="image is-128x128 has-mb-6">
+                            <img class="is-rounded" src="/images/avatar.jpeg" alt="Tryking">
+                        </figure>
+                    
+                    
+                    <p class="is-size-4 is-block">
+                        Tryking
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        末日没有进行曲
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>China</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Posts
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        52
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Categories
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        9
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Tags
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        17
+                    </p>
+                </div>
+            </div>
+        </nav>
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/Tryking" target="_blank">
+                Follow</a>
+        </div>
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Github" href="https://github.com/Tryking">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="CSDN" href="https://blog.csdn.net/sinat_18268881">
+                
+                <i class="fab fa-cuttlefish"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="RSS" href="/">
+                
+                <i class="fas fa-rss"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+<div class="card widget" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                Catalogue
+            </h3>
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#创建一个-Kubernetes-集群">
+        <span class="has-mr-6">1</span>
+        <span>创建一个 Kubernetes 集群</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#创建一个集群">
+        <span class="has-mr-6">1.1</span>
+        <span>创建一个集群</span>
+        </a></li><li>
+        <a class="is-flex" href="#集群版本">
+        <span class="has-mr-6">1.2</span>
+        <span>集群版本</span>
+        </a></li><li>
+        <a class="is-flex" href="#查看集群详情">
+        <span class="has-mr-6">1.3</span>
+        <span>查看集群详情</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#部署一个-APP-应用">
+        <span class="has-mr-6">2</span>
+        <span>部署一个 APP 应用</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#部署我们的-APP-应用">
+        <span class="has-mr-6">2.1</span>
+        <span>部署我们的 APP 应用</span>
+        </a></li><li>
+        <a class="is-flex" href="#查看我们的-APP-应用">
+        <span class="has-mr-6">2.2</span>
+        <span>查看我们的 APP 应用</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#探索应用">
+        <span class="has-mr-6">3</span>
+        <span>探索应用</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#Nodes">
+        <span class="has-mr-6">3.1</span>
+        <span>Nodes</span>
+        </a></li><li>
+        <a class="is-flex" href="#使用-Kubectl-进行故障排查">
+        <span class="has-mr-6">3.2</span>
+        <span>使用 Kubectl 进行故障排查</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#使用服务公开应用">
+        <span class="has-mr-6">4</span>
+        <span>使用服务公开应用</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#Kubernetes-服务概述">
+        <span class="has-mr-6">4.1</span>
+        <span>Kubernetes 服务概述</span>
+        </a></li><li>
+        <a class="is-flex" href="#Services-和-Labels">
+        <span class="has-mr-6">4.2</span>
+        <span>Services 和 Labels</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#运行应用程序的多个实例">
+        <span class="has-mr-6">5</span>
+        <span>运行应用程序的多个实例</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#扩缩（Scaling）应用程序">
+        <span class="has-mr-6">5.1</span>
+        <span>扩缩（Scaling）应用程序</span>
+        </a></li><li>
+        <a class="is-flex" href="#扩缩概述">
+        <span class="has-mr-6">5.2</span>
+        <span>扩缩概述</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#指定滚动更新">
+        <span class="has-mr-6">6</span>
+        <span>指定滚动更新</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#更新应用程序">
+        <span class="has-mr-6">6.1</span>
+        <span>更新应用程序</span>
+        </a></li></ul></li></ul>
+        </div>
+    </div>
+</div>
+
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    末日没有进行曲
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2021 Tryking&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                <br>
+                备案号：<a href="http://beian.miit.gov.cn" target="_blank">晋ICP备16005436号-2</a>
+                <br>
+                <span id="busuanzi_container_site_uv">
+                Visited by <span id="busuanzi_value_site_uv">0</span> users, 
+                <span id="busuanzi_value_site_pv">0</span> visits
+                </span>
+                
+                
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("en");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="Back to Top" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/js/clipboard.js" defer></script>
+    
+
+    
+    
+    
+
+    
+    
+    
+
+
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+
+    <!--背景线条-->
+    <!--<script type="text/javascript" color="0,0,255" opacity='0.7' zIndex="-1" count="99" src="dist/canvas-nest.js"></script>-->
+    <!--<script type="text/javascript" color="0,0,255" opacity='0.7' zIndex="-1" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>-->
+</body>
+</html>

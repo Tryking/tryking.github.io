@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+<title>使用 Json Schema 定义 API - 末日没有进行曲</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+    <meta name="description" content="前面我们介绍了 Json Schema 的基本内容，这篇文章我们结合 jsonschema2pojo 工具深入分析如何使用 Json Schema 生成 API，学习更多关于 Json Schema 的关键字等知识。">
+<meta name="keywords" content="Java,Json Schema,API">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 Json Schema 定义 API">
+<meta property="og:url" content="http://yoursite.com/2019/06/25/使用-Json-Schema-定义-API/index.html">
+<meta property="og:site_name" content="末日没有进行曲">
+<meta property="og:description" content="前面我们介绍了 Json Schema 的基本内容，这篇文章我们结合 jsonschema2pojo 工具深入分析如何使用 Json Schema 生成 API，学习更多关于 Json Schema 的关键字等知识。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/images/og_image.png">
+<meta property="og:updated_time" content="2021-05-30T10:27:23.101Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用 Json Schema 定义 API">
+<meta name="twitter:description" content="前面我们介绍了 Json Schema 的基本内容，这篇文章我们结合 jsonschema2pojo 工具深入分析如何使用 Json Schema 生成 API，学习更多关于 Json Schema 的关键字等知识。">
+<meta name="twitter:image" content="http://yoursite.com/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+<script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?4d29c8582767154d4e12ab2007b9f1c7";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    
+    
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+    
+    
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+    
+    
+    
+        <script type="text/javascript" src="//js.users.51.la/20168017.js"></script>
+    
+
+
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<!--<body class="is-2-column">-->
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                末日没有进行曲
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item" href="/">Home</a>
+                
+                <a class="navbar-item" href="/archives">Archives</a>
+                
+                <a class="navbar-item" href="/categories">Categories</a>
+                
+                <a class="navbar-item" href="/tags">Tags</a>
+                
+                <a class="navbar-item" href="/about">About</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    
+                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="https://github.com/Tryking">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                
+                <a class="navbar-item search" title="Search" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-06-25T15:37:24.000Z">2019-06-25</time>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    10 minutes read (About 1560 words)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span> visits
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                使用 Json Schema 定义 API
+            
+        </h1>
+        <div class="content">
+            <p>前面我们介绍了 <code>Json Schema</code> 的基本内容，这篇文章我们结合 <code>jsonschema2pojo</code> 工具深入分析如何使用 <code>Json Schema</code> 生成 API，学习更多关于 <code>Json Schema</code> 的关键字等知识。</p>
+<a id="more"></a>
+<p><code>jsonschema2pojo</code> 该库提供了多种使用<code>Json Schame</code>文件生成 Java 类的方法，比如 <code>Maven</code>插件, <code>Gradle</code>插件, <code>Ant</code>任务, 以及直接使用命令行，甚至还可以在代码中直接使用，具体参照 <a href="https://github.com/joelittlejohn/jsonschema2pojo/wiki/Getting-Started" target="_blank" rel="noopener">jsonschema2pojo Getting Started</a></p>
+<p>这里我直接采用 Mac 命令行的方式，在 Mac 下安装此命令的方式比较简单，直接运行 <code>brew install jsonschema2pojo</code> 安装即可。</p>
+<h2 id="properties"><a href="#properties" class="headerlink" title="properties"></a>properties</h2><p>在一个类中，最关键的就是属性了，每个类都可能有多个属性，在 <code>Json Schema</code> 中就是通过 <code>properties</code> 来定义类的属性的， properties 中的每个条目都是所定义类的一个属性。</p>
+<p>比如，对于此 Json Schema <code>MyObject.json</code>：</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;type&quot; : &quot;object&quot;,</span><br><span class="line">    &quot;properties&quot; : &#123;</span><br><span class="line">        &quot;foo&quot; : &#123;</span><br><span class="line">            &quot;type&quot; : &quot;string&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们执行 <code>jsonschema2pojo</code> 任务后，可以生成对应的 Java 类：</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public class MyObject &#123;</span><br><span class="line">    private String foo;</span><br><span class="line">    public String getFoo() &#123;</span><br><span class="line">       return foo;</span><br><span class="line">    &#125;</span><br><span class="line">    public void setFoo(String foo) &#123;</span><br><span class="line">       this.foo = foo;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="type"><a href="#type" class="headerlink" title="type"></a>type</h2><p>像我们 Java 中有多种类型，那不同的类型在 Json Schema 中如何表示呢？一般通用的转换如下所示，这也是 jsonschema2pojo 工具默认使用的转换方式：</p>
+<table>
+<thead>
+<tr>
+<th align="center">Schema Type</th>
+<th align="center">Java Type</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">string</td>
+<td align="center">java.lang.String</td>
+</tr>
+<tr>
+<td align="center">number</td>
+<td align="center">java.lang.Double</td>
+</tr>
+<tr>
+<td align="center">integer</td>
+<td align="center">java.lang.Integer</td>
+</tr>
+<tr>
+<td align="center">boolean</td>
+<td align="center">java.lang.Boolean</td>
+</tr>
+<tr>
+<td align="center">object</td>
+<td align="center">自己生成的类</td>
+</tr>
+<tr>
+<td align="center">array</td>
+<td align="center">java.util.List</td>
+</tr>
+<tr>
+<td align="center">array(with “uniqueItems”:true)</td>
+<td align="center">java.util.Set</td>
+</tr>
+<tr>
+<td align="center">null</td>
+<td align="center">java.lang.object</td>
+</tr>
+<tr>
+<td align="center">any</td>
+<td align="center">java.lang.object</td>
+</tr>
+</tbody></table>
+<p>值的注意的是，如果我们增加了 <code>usePrimitives</code> 选项，对于 <code>Integer, Double, Boolean</code> 这三个包装类将会转换成基本类型 <code>int, double, boolean</code>。</p>
+<h2 id="additionalProperties"><a href="#additionalProperties" class="headerlink" title="additionalProperties"></a>additionalProperties</h2><p>我们平时开发中，为了类利于扩展，有时会给类增加一个<code>Map</code>类型的属性，这样当外部需要传更多的参数给我们时，不需要更改API，直接将参数放到这个 <code>Map</code> 里就可以快速实现。<code>jsonschema2pojo</code>同样也实现了这个功能，当我们没有指定<code>additionalProperties</code>属性为<code>false</code>或者没有指定<code>additionalProperties</code>属性时，<code>jsonschema2pojo</code>会为我们定义的类自动生成一个类型为<code>Map</code>的<code>additionalProperties</code>属性。</p>
+<p>比如：</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;type&quot; : &quot;object&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;type&quot; : &quot;object&quot;,</span><br><span class="line">    &quot;additionalProperties&quot; : &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>生成的类：</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public class MyObject &#123;</span><br><span class="line">    private java.util.Map&lt;String, Object&gt; additionalProperties = new java.util.HashMap&lt;String, Object&gt;();</span><br><span class="line"></span><br><span class="line">    @org.codehaus.jackson.annotate.JsonAnyGetter</span><br><span class="line">    public java.util.Map&lt;String, Object&gt; getAdditionalProperties() &#123;</span><br><span class="line">        return this.additionalProperties;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @org.codehaus.jackson.annotate.JsonAnySetter</span><br><span class="line">    public void setAdditionalProperties(String name, Object value) &#123;</span><br><span class="line">        this.additionalProperties.put(name, value);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="items"><a href="#items" class="headerlink" title="items"></a>items</h2><p><code>items</code> 用于指定我们定义 <code>List</code> 以及 <code>Set</code> 类型时的子元素详情，比如子元素的类型以及描述等。<br>例如：</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;type&quot; : &quot;object&quot;,</span><br><span class="line">    &quot;properties&quot; : &#123;</span><br><span class="line">        &quot;myArrayProperty&quot; : &#123;</span><br><span class="line">            &quot;type&quot; : &quot;array&quot;,</span><br><span class="line">            &quot;items&quot; : &#123;</span><br><span class="line">                &quot;type&quot; : &quot;string&quot;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>生成的属性：</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; myArrayProperty;</span><br></pre></td></tr></table></figure>
+
+<h2 id="required"><a href="#required" class="headerlink" title="required"></a>required</h2><p>如果一个属性在<code>required</code>中指定了，那么这个属性会有一个 <code>Required</code> 的注解，表明该属性是必需的。</p>
+<h2 id="uniqueItems"><a href="#uniqueItems" class="headerlink" title="uniqueItems"></a>uniqueItems</h2><p>这个就是我们上面表格中的用于区分 <code>List</code> 和 <code>Set</code> 的关键字了，如果我们定义的<code>array</code>中声明<code>uniqueItems</code>为<code>true</code>，那么最终转换为的属性的类型就为<code>Set</code>。</p>
+<h2 id="enum"><a href="#enum" class="headerlink" title="enum"></a>enum</h2><p>对于枚举类型的定义需要使用到此关键字，比如：</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;type&quot; : &quot;object&quot;,</span><br><span class="line">    &quot;properties&quot; : &#123;</span><br><span class="line">        &quot;myEnum&quot; : &#123;</span><br><span class="line">            &quot;type&quot; : &quot;string&quot;,</span><br><span class="line">            &quot;enum&quot; : [&quot;one&quot;, &quot;secondOne&quot;, &quot;3rd one&quot;]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>生成的枚举类：</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">@Generated(&quot;com.googlecode.jsonschema2pojo&quot;)</span><br><span class="line">    public static enum MyEnum &#123;</span><br><span class="line"></span><br><span class="line">    ONE(&quot;one&quot;),</span><br><span class="line">    SECOND_ONE(&quot;secondOne&quot;),</span><br><span class="line">    _3_RD_ONE(&quot;3rd one&quot;);</span><br><span class="line">    private final String value;</span><br><span class="line"></span><br><span class="line">    private MyEnum(String value) &#123;</span><br><span class="line">        this.value = value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @JsonValue</span><br><span class="line">    @Override</span><br><span class="line">    public String toString() &#123;</span><br><span class="line">        return this.value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @JsonCreator</span><br><span class="line">    public static MyObject.MyEnum fromValue(String value) &#123;</span><br><span class="line">        for (MyObject.MyEnum c: MyObject.MyEnum.values()) &#123;</span><br><span class="line">            if (c.value.equals(value)) &#123;</span><br><span class="line">                return c;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        throw new IllegalArgumentException(value);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="default"><a href="#default" class="headerlink" title="default"></a>default</h2><p>如果我们需要某个属性有默认值，可以加上此参数，生成类的属性会自动实例化。具体可参照下表：</p>
+<table>
+<thead>
+<tr>
+<th align="center">Json Schema</th>
+<th align="center">Java</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">myString : { “type”:”string”, “default”:”abc”}</td>
+<td align="center">myString : { “type”:”string”, “default”:”abc”};</td>
+</tr>
+<tr>
+<td align="center">myInteger : { “type”:”integer”, “default”:”100”}</td>
+<td align="center">private Integer myInteger = 100;</td>
+</tr>
+<tr>
+<td align="center">myNumber : { “type”:”number”, “default”:”10.3”}</td>
+<td align="center">private Double myNumber = 10.3D;</td>
+</tr>
+<tr>
+<td align="center">myMillis : { “type”:”string”, “format”:”utc-millisec”, “default”:”500”}</td>
+<td align="center">private Long myMillis = 500L;</td>
+</tr>
+<tr>
+<td align="center">myDate : { “type”:”string”, “format”:”date-time”, “default”:”500”}</td>
+<td align="center">private Date myDate = new Date(500L);</td>
+</tr>
+<tr>
+<td align="center">myDate : { “type”:”string”, “format”:”date-time”, “default”:”2011-02-24T09:25:23.112+0000”}</td>
+<td align="center">private Date myDate = new Date(1298539523112L);</td>
+</tr>
+<tr>
+<td align="center">myList : { “type”:”array”, “default”:[“a”,”b”,”c”]}</td>
+<td align="center">private List<string> myList = new ArrayList<string>(Arrays.asList(“a”,”b”,”c”));</string></string></td>
+</tr>
+</tbody></table>
+<h2 id="title-amp-amp-description"><a href="#title-amp-amp-description" class="headerlink" title="title &amp;&amp; description"></a>title &amp;&amp; description</h2><p><code>title</code> 和 <code>description</code> 用于描述一个属性，当我们指定了这两个参数时，<code>jsonschema2pojo</code><br>会在属性的上面生成 Java 文档，并且<code>title</code>在<code>description</code>之上。</p>
+<h2 id="format"><a href="#format" class="headerlink" title="format"></a>format</h2><p><code>format</code> 是<code>jsonschema2pojo</code> 提供给我们扩展更多类型的一个参数，在上面介绍的<code>type</code>中可以看到我们生成的 Java 类型并不多，像 Date 等这些参数都没有，但是当我们加上 <code>jsonschema2pojo</code>能识别的<code>format</code>参数后，就可以扩展我们的属性类型，具体参照：</p>
+<table>
+<thead>
+<tr>
+<th align="center">Format value</th>
+<th align="center">Java Type</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">“date-time”</td>
+<td align="center">java.util.Date</td>
+</tr>
+<tr>
+<td align="center">“date”</td>
+<td align="center">String</td>
+</tr>
+<tr>
+<td align="center">“time”</td>
+<td align="center">String</td>
+</tr>
+<tr>
+<td align="center">“utc-millisec”</td>
+<td align="center">long</td>
+</tr>
+<tr>
+<td align="center">“regex”</td>
+<td align="center">java.util.regex.Pattern</td>
+</tr>
+<tr>
+<td align="center">“color”</td>
+<td align="center">String</td>
+</tr>
+<tr>
+<td align="center">“style”</td>
+<td align="center">String</td>
+</tr>
+<tr>
+<td align="center">“phone”</td>
+<td align="center">String</td>
+</tr>
+<tr>
+<td align="center">“uri”</td>
+<td align="center">java.net.URI</td>
+</tr>
+<tr>
+<td align="center">“email”</td>
+<td align="center">String</td>
+</tr>
+<tr>
+<td align="center">“ip-address”</td>
+<td align="center">String</td>
+</tr>
+<tr>
+<td align="center">“ipv6”</td>
+<td align="center">String</td>
+</tr>
+<tr>
+<td align="center">“host-name”</td>
+<td align="center">String</td>
+</tr>
+<tr>
+<td align="center">“uuid”</td>
+<td align="center">java.util.UUID</td>
+</tr>
+</tbody></table>
+<h2 id="extends"><a href="#extends" class="headerlink" title="extends"></a>extends</h2><p>使用<code>extends</code>关键字可以实现 <code>Java</code> 中的继承。<br>比如，我们定义 <code>flower.json</code></p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">   &quot;type&quot; : &quot;object&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后定义 <code>rose.json</code>，使其继承自 <code>flower</code></p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;type&quot; : &quot;object&quot;,</span><br><span class="line">    &quot;extends&quot; : &#123;</span><br><span class="line">        &quot;$ref&quot; : &quot;flower.json&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最终我们生成的 Rose.java 为以下内容：</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public class Rose extends Flower &#123;</span><br><span class="line">    ....</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="ref"><a href="#ref" class="headerlink" title="$ref"></a>$ref</h2><p><code>$ref</code>关键字用于指定某一个属性的引用来源，在<code>jsonschema2pojo</code>中支持以下协议：</p>
+<ul>
+<li>http://, https://</li>
+<li>file://</li>
+<li>classpath:, resource:, java: (all synonyms used to resolve schemas from the classpath).</li>
+</ul>
+<p>我们定义 API 的时候一般是需要引用到其他我们定义的 <code>Json Schema</code> 文档。比如：</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">   &quot;type&quot; : &quot;object&quot;,</span><br><span class="line">   &quot;properties&quot; : &#123;</span><br><span class="line">      &quot;loggedInUser&quot; : &#123;</span><br><span class="line">          &quot;$ref&quot; : &quot;user.json&quot;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>表明<code>loggedInUser</code>属性的类型是一个由<code>user.json</code>定义的类型。</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">   &quot;description&quot; : &quot;Tree node&quot;,</span><br><span class="line">   &quot;type&quot; : &quot;object&quot;,</span><br><span class="line">   &quot;properties&quot; : &#123;</span><br><span class="line">      &quot;children&quot; : &#123;</span><br><span class="line">         &quot;type&quot; : &quot;array&quot;,</span><br><span class="line">         &quot;items&quot; : &#123;</span><br><span class="line">             &quot;$ref&quot; : &quot;#&quot;</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个表明 <code>children</code> 属性引用的是该 object 自身，所以这可以生成一个 Tree 类型的类。</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class TreeNode &#123;</span><br><span class="line">   public List&lt;TreeNode&gt; getChildren() &#123;</span><br><span class="line">   ...&#125;</span><br><span class="line"></span><br><span class="line">   public void setChildren(List&lt;TreeNode&gt; children) &#123;</span><br><span class="line">   ...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="更多"><a href="#更多" class="headerlink" title="更多"></a>更多</h2><ul>
+<li><p>javaEnumNames</p>
+  <figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;type&quot; : &quot;object&quot;,</span><br><span class="line">    &quot;properties&quot; : &#123;</span><br><span class="line">        &quot;foo&quot; : &#123;</span><br><span class="line">            &quot;type&quot; : &quot;string&quot;,</span><br><span class="line">            &quot;enum&quot; : [&quot;H&quot;,&quot;L&quot;],</span><br><span class="line">            &quot;javaEnumNames&quot; : [&quot;HIGH&quot;,&quot;LOW&quot;]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<pre><code>生成的类：
+
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public enum Foo &#123;</span><br><span class="line">    HIGH(&quot;H&quot;),</span><br><span class="line">    LOW(&quot;L&quot;)</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></code></pre><ul>
+<li><p>javaInterfaces</p>
+  <figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;javaInterfaces&quot; : [&quot;java.io.Serializable&quot;, &quot;Cloneable&quot;],</span><br><span class="line">    &quot;type&quot; : &quot;object&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<pre><code>生成的类：
+
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public class FooBar implements Serializable, Cloneable</span><br><span class="line">&#123;</span><br><span class="line">...</span><br></pre></td></tr></table></figure></code></pre><ul>
+<li><p>javaName</p>
+  <figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;type&quot;: &quot;object&quot;,</span><br><span class="line">  &quot;properties&quot;: &#123;</span><br><span class="line">    &quot;a&quot;: &#123;</span><br><span class="line">      &quot;javaName&quot;: &quot;b&quot;,</span><br><span class="line">      &quot;type&quot;: &quot;string&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<pre><code>生成的类：
+
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class MyClass &#123;</span><br><span class="line">    @JsonProperty(&quot;a&quot;)</span><br><span class="line">    private String b;</span><br><span class="line">	</span><br><span class="line">    @JsonProperty(&quot;a&quot;)</span><br><span class="line">    public String getB() &#123;</span><br><span class="line">        return b;</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    @JsonProperty(&quot;a&quot;)</span><br><span class="line">    public void setB(String b) &#123;</span><br><span class="line">        this.b = b;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></code></pre><h2 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h2><blockquote>
+<p>本文绝大部分内容是引用的 <code>jsonschame2pojo</code> 的文档，更多内容请看官方文档 <a href="http://www.jsonschema2pojo.org/" target="_blank" rel="noopener">jsonschema2pojo</a>.</p>
+</blockquote>
+
+        </div>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/API/">API</a>, <a class="has-link-grey -link" href="/tags/Java/">Java</a>, <a class="has-link-grey -link" href="/tags/Json-Schema/">Json Schema</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="menu-label has-text-centered">Like this article? Support the author with</h3>
+        <div class="buttons is-centered">
+            
+                
+<a class="button is-info donate">
+    <span class="icon is-small">
+        <i class="fab fa-alipay"></i>
+    </span>
+    <span>Alipay</span>
+    <div class="qrcode"><img src="http://media.dengkaiting.com/no_thanks.jpg" alt="Alipay"></div>
+</a>
+
+                
+                
+<a class="button is-success donate">
+    <span class="icon is-small">
+        <i class="fab fa-weixin"></i>
+    </span>
+    <span>Wechat</span>
+    <div class="qrcode"><img src="http://media.dengkaiting.com/no.gif" alt="Wechat"></div>
+</a>
+
+                
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2019/06/29/如何才能更好地成长/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">如何才能更好地成长</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019/06/25/Json-Schema-是什么？/">
+                <span class="level-item">Json Schema 是什么？</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">Comments</h3>
+        
+<div id="lv-container" data-id="city" data-uid="MTAyMC80NDYzMS8yMTE2MA==">
+    <script type="text/javascript">
+        (function(d, s) {
+            var j, e = d.getElementsByTagName(s)[0];
+
+            if (typeof LivereTower === 'function') { return; }
+
+            j = d.createElement(s);
+            j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+            j.async = true;
+
+            e.parentNode.insertBefore(j, e);
+        })(document, 'script');
+    </script>
+    <noscript> Please activate JavaScript for write a comment in LiveRe</noscript>
+</div>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left is-sticky">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered">
+                <div>
+                    
+                        <figure class="image is-128x128 has-mb-6">
+                            <img class="is-rounded" src="/images/avatar.jpeg" alt="Tryking">
+                        </figure>
+                    
+                    
+                    <p class="is-size-4 is-block">
+                        Tryking
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        末日没有进行曲
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>China</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Posts
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        52
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Categories
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        9
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Tags
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        17
+                    </p>
+                </div>
+            </div>
+        </nav>
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/Tryking" target="_blank">
+                Follow</a>
+        </div>
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Github" href="https://github.com/Tryking">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="CSDN" href="https://blog.csdn.net/sinat_18268881">
+                
+                <i class="fab fa-cuttlefish"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="RSS" href="/">
+                
+                <i class="fas fa-rss"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    末日没有进行曲
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2021 Tryking&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                <br>
+                备案号：<a href="http://beian.miit.gov.cn" target="_blank">晋ICP备16005436号-2</a>
+                <br>
+                <span id="busuanzi_container_site_uv">
+                Visited by <span id="busuanzi_value_site_uv">0</span> users, 
+                <span id="busuanzi_value_site_pv">0</span> visits
+                </span>
+                
+                
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("en");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="Back to Top" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/js/clipboard.js" defer></script>
+    
+
+    
+    
+    
+
+    
+    
+    
+
+
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+
+    <!--背景线条-->
+    <!--<script type="text/javascript" color="0,0,255" opacity='0.7' zIndex="-1" count="99" src="dist/canvas-nest.js"></script>-->
+    <!--<script type="text/javascript" color="0,0,255" opacity='0.7' zIndex="-1" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>-->
+</body>
+</html>

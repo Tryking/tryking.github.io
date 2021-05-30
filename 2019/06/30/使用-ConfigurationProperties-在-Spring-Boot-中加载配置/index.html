@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+<title>使用 @ConfigurationProperties 在 Spring Boot 中加载配置 - 末日没有进行曲</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+    <meta name="description" content="使用 Spring Boot 加载配置文件的配置非常便利，我们只需要使用一些注解配置一下就能很方便地加载配置项了。今天我们谈一谈 ConfigurationProperties 注解的使用，ConfigurationProperties可以把配置文件中有相同前缀的配置在一个配置类中直接省去相同前缀进行读取，甚至还可以将相同前缀的配置自动封装成实体类。">
+<meta name="keywords" content="Java,Spring Boot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 @ConfigurationProperties 在 Spring Boot 中加载配置">
+<meta property="og:url" content="http://yoursite.com/2019/06/30/使用-ConfigurationProperties-在-Spring-Boot-中加载配置/index.html">
+<meta property="og:site_name" content="末日没有进行曲">
+<meta property="og:description" content="使用 Spring Boot 加载配置文件的配置非常便利，我们只需要使用一些注解配置一下就能很方便地加载配置项了。今天我们谈一谈 ConfigurationProperties 注解的使用，ConfigurationProperties可以把配置文件中有相同前缀的配置在一个配置类中直接省去相同前缀进行读取，甚至还可以将相同前缀的配置自动封装成实体类。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/images/og_image.png">
+<meta property="og:updated_time" content="2021-05-30T10:27:23.100Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用 @ConfigurationProperties 在 Spring Boot 中加载配置">
+<meta name="twitter:description" content="使用 Spring Boot 加载配置文件的配置非常便利，我们只需要使用一些注解配置一下就能很方便地加载配置项了。今天我们谈一谈 ConfigurationProperties 注解的使用，ConfigurationProperties可以把配置文件中有相同前缀的配置在一个配置类中直接省去相同前缀进行读取，甚至还可以将相同前缀的配置自动封装成实体类。">
+<meta name="twitter:image" content="http://yoursite.com/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+<script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?4d29c8582767154d4e12ab2007b9f1c7";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    
+    
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+    
+    
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+    
+    
+    
+        <script type="text/javascript" src="//js.users.51.la/20168017.js"></script>
+    
+
+
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<!--<body class="is-2-column">-->
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                末日没有进行曲
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item" href="/">Home</a>
+                
+                <a class="navbar-item" href="/archives">Archives</a>
+                
+                <a class="navbar-item" href="/categories">Categories</a>
+                
+                <a class="navbar-item" href="/tags">Tags</a>
+                
+                <a class="navbar-item" href="/about">About</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    
+                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="https://github.com/Tryking">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                <a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;">
+                    <i class="fas fa-list-ul"></i>
+                </a>
+                
+                
+                <a class="navbar-item search" title="Search" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-06-30T10:50:57.000Z">2019-06-30</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/Java/">Java</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    10 minutes read (About 1547 words)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span> visits
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                使用 @ConfigurationProperties 在 Spring Boot 中加载配置
+            
+        </h1>
+        <div class="content">
+            <p>使用 Spring Boot 加载配置文件的配置非常便利，我们只需要使用一些注解配置一下就能很方便地加载配置项了。今天我们谈一谈 <code>ConfigurationProperties</code> 注解的使用，<code>ConfigurationProperties</code>可以把配置文件中有相同前缀的配置在一个配置类中直接省去相同前缀进行读取，甚至还可以将相同前缀的配置自动封装成实体类。</p>
+<a id="more"></a>
+<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><h3 id="创建标准-Spring-Boot-工程"><a href="#创建标准-Spring-Boot-工程" class="headerlink" title="创建标准 Spring Boot 工程"></a>创建标准 Spring Boot 工程</h3><p>首先，我们使用一个标准的 Spring Boot 的依赖设置，在 <code>build.gradle</code>文件的<code>plugins</code>以及<code>dependencies</code>中加入相关内容，如下：</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">plugins &#123;</span><br><span class="line">    id <span class="hljs-string">'org.springframework.boot'</span> version <span class="hljs-string">'2.1.6.RELEASE'</span></span><br><span class="line">    id <span class="hljs-string">'java'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dependencies &#123;</span><br><span class="line">    implementation <span class="hljs-string">'org.springframework.boot:spring-boot-starter'</span></span><br><span class="line">    testImplementation <span class="hljs-string">'org.springframework.boot:spring-boot-starter-test'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后创建 Spring application 类，用于启动我们的 Spring Boot 应用。（如果使用 IDEA 进行开发，使用 <code>New Project</code> -&gt; <code>Spring Initializa</code> 创建 <code>Spring Boot</code> 应用非常方便，IDEA 会帮我们自动生成 Spring application 类。）我们顺便在Spring Application 类中加上一个 component，方便我们进行测试。(实现了<code>CommandLineRunner</code>的 component 会在应用启动成功后运行)</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@SpringBootApplication</span></span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ConfigurationApplication</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(ConfigurationApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="hljs-meta">@Component</span></span><br><span class="line">    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">StartupRunner</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">CommandLineRunner</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="hljs-meta">@Override</span></span><br><span class="line">        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span><span class="hljs-params">(String... args)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;</span><br><span class="line">            System.out.println(<span class="hljs-string">"Application running"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="编写配置文件"><a href="#编写配置文件" class="headerlink" title="编写配置文件"></a>编写配置文件</h3><p>Spring Boot 中默认的配置文件是 <code>application.properties</code>，但是我们通常会将自定义的配置单独放在一个文件中，这里我们在 resources 目录下创建一个配置文件 <code>configprops.properties</code>，并加入以下配置内容：</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">user.name=Tryking</span><br><span class="line">user.password=Security</span><br><span class="line">user.age=<span class="hljs-number">18</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到，三个配置都有相同的前缀 <code>user</code>。</p>
+<h3 id="编写配置读取类"><a href="#编写配置读取类" class="headerlink" title="编写配置读取类"></a>编写配置读取类</h3><p>接下来我们编写一个配置读取的类文件</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@Configuration</span></span><br><span class="line"><span class="hljs-meta">@PropertySource</span>(<span class="hljs-string">"classpath:configprops.properties"</span>)</span><br><span class="line"><span class="hljs-meta">@ConfigurationProperties</span>(prefix = <span class="hljs-string">"user"</span>)</span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ConfigProperties</span> </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">private</span> String name;</span><br><span class="line">    <span class="hljs-keyword">private</span> String password;</span><br><span class="line">    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> age;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">getName</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">        <span class="hljs-keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setName</span><span class="hljs-params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="hljs-keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">getPassword</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">        <span class="hljs-keyword">return</span> password;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setPassword</span><span class="hljs-params">(String password)</span> </span>&#123;</span><br><span class="line">        <span class="hljs-keyword">this</span>.password = password;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getAge</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">        <span class="hljs-keyword">return</span> age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setAge</span><span class="hljs-params">(<span class="hljs-keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">        <span class="hljs-keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="hljs-meta">@Override</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">toString</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>Configuration</code> 注解表明我们需要一个配置 Bean，Spring 启动的时候会在应用 Context 中帮我们创建一个 Java Bean。这里使用 <code>Component</code> 也是可以的，但是为了代码的可读性，我们使用 <code>Configuration</code> 更合理。</p>
+<p><code>PropertySource</code> 注解用来定义我们的配置文件位置，如果没有此注解的话，Spring Boot 默认找的是 <code>application.properties</code> 文件。</p>
+<p><code>ConfigurationProperties</code> 注解便是我们的主角了，它用来定义我们要加载的配置的前缀，我们这里定义的是 <code>user</code>，因此 Spring Boot 会去寻找 user 前缀的配置。</p>
+<p>在此类中，我们定义了三个属性，分别是 <code>name</code>, <code>password</code>, <code>age</code>，和我们配置文件中的属性是一一对应的。因为 Spring 使用标准的 Java Bean Setters，因此我们需要实现各个属性的 <code>getter</code> &amp; <code>setter</code> 方法。</p>
+<p>这样我们就完成了所有的配置，Spring 会自动将我们在配置文件中含有 <code>user</code> 前缀的配置绑定到 <code>ConfigProperties</code> 类中具有相同名字的属性上。</p>
+<h3 id="测试配置成功与否"><a href="#测试配置成功与否" class="headerlink" title="测试配置成功与否"></a>测试配置成功与否</h3><p>然后我们在 <code>ConfigurationApplication</code> 启动类中定义的 <code>StartupRunner</code> component 中增加对此配置文件的测试，我们使用此配置的 <code>toString()</code> 方法进行输出。</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ConfigProperties configProperties;</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">// 引入配置 bean</span></span><br><span class="line"><span class="hljs-meta">@Autowired</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">ConfigurationApplication</span><span class="hljs-params">(ConfigProperties configProperties)</span> </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">this</span>.configProperties = configProperties;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;</span><br><span class="line">    SpringApplication.run(ConfigurationApplication.class, args);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">@Component</span></span><br><span class="line"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">StartupRunner</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">CommandLineRunner</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-meta">@Override</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span><span class="hljs-params">(String... args)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="hljs-string">"Application running"</span>);</span><br><span class="line">        <span class="hljs-comment">// 输出</span></span><br><span class="line">        System.out.println(configProperties.toString());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后，我们启动 Application，可以看到命令行中成功输出了我们的配置信息。</p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Application running</span><br><span class="line">ConfigProperties&#123;name=&apos;Tryking&apos;, password=&apos;Security&apos;, age=18&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="进阶：加载嵌套属性"><a href="#进阶：加载嵌套属性" class="headerlink" title="进阶：加载嵌套属性"></a>进阶：加载嵌套属性</h2><p>我们还可以使用 <code>ConfigurationProperties</code> 来实现复杂对象的属性加载，比如 Map，List，以及实体类。</p>
+<p>我们在配置文件中继续增加更多的配置：</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># Simple properties</span><br><span class="line">user.name=Tryking</span><br><span class="line">user.password=Security</span><br><span class="line">user.age=<span class="hljs-number">18</span></span><br><span class="line"></span><br><span class="line"># List properties</span><br><span class="line">user.friends[<span class="hljs-number">0</span>]=Tom</span><br><span class="line">user.friends[<span class="hljs-number">1</span>]=Jack</span><br><span class="line"></span><br><span class="line"># Map properties</span><br><span class="line">user.scores.java=<span class="hljs-number">90</span></span><br><span class="line">user.scores.python=<span class="hljs-number">95</span></span><br><span class="line"></span><br><span class="line"># Object properties</span><br><span class="line">user.job.address=Beijing</span><br><span class="line">user.job.salary=<span class="hljs-number">50000</span></span><br></pre></td></tr></table></figure>
+
+<p>然后在配置读取类中增加对这些属性的读取。</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">private</span> String name;</span><br><span class="line"><span class="hljs-keyword">private</span> String password;</span><br><span class="line"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> age;</span><br><span class="line"><span class="hljs-keyword">private</span> List&lt;String&gt; friends;</span><br><span class="line"><span class="hljs-keyword">private</span> Map&lt;String, Integer&gt; scores;</span><br><span class="line"><span class="hljs-keyword">private</span> Job job;</span><br><span class="line"></span><br><span class="line">...set...</span><br></pre></td></tr></table></figure>
+
+<p>同时不要忘记 <code>getter</code> &amp; <code>setter</code> 方法的实现，以及实体 Bean <code>Job</code>的定义（同样需要实现 <code>getter</code> &amp; <code>setter</code> 方法）。</p>
+<p>完成后，我们重新运行 Application，可以看到这些复杂配置也成功读取出来了：</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Application running</span><br><span class="line">ConfigProperties&#123;name=<span class="hljs-string">'Tryking'</span>, password=<span class="hljs-string">'Security'</span>, age=<span class="hljs-number">18</span>, friends=[Tom, Jack], scores=&#123;java=<span class="hljs-number">90</span>, python=<span class="hljs-number">95</span>&#125;, job=Job&#123;address=<span class="hljs-string">'Beijing'</span>, salary=<span class="hljs-number">50000</span>&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="进阶：在-Bean-上使用-ConfigurationProperties"><a href="#进阶：在-Bean-上使用-ConfigurationProperties" class="headerlink" title="进阶：在 @Bean 上使用 @ConfigurationProperties"></a>进阶：在 @Bean 上使用 @ConfigurationProperties</h2><p>我们还可以在具有 @Bean 注解的方法上使用 @ConfigurationProperties。</p>
+<p>当我们想在我们引用的外部第三方 component 中绑定一些属性时，此方法特别有用。</p>
+<p>我们先创建一个简单的 Item 供后面的类引用。</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Item</span> </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">private</span> String name;</span><br><span class="line">    <span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> size;</span><br><span class="line"> </span><br><span class="line">    <span class="hljs-comment">// standard getters and setters</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来，我们在 @Bean 注解上使用 @ConfigurationProperties，以绑定我们配置的属性到此 Bean 上。</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@Configuration</span></span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ConfigProperties</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line">    <span class="hljs-meta">@Bean</span></span><br><span class="line">    <span class="hljs-meta">@ConfigurationProperties</span>(prefix = <span class="hljs-string">"item"</span>)</span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> Item <span class="hljs-title">item</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Item();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样，Spring Context 会将所有带有 item 前缀的属性帮我们映射到 Item 实例中。</p>
+<h2 id="配置验证"><a href="#配置验证" class="headerlink" title="配置验证"></a>配置验证</h2><p>@ConfigurationProperties 提供了属性验证的功能，使用 <code>JSR-303</code> 格式来进行验证。支持验证需要在类上增加<code>@Validated</code>注解，然后我们可以进行如下验证：</p>
+<ul>
+<li><p>hostName 不允许为空</p>
+  <figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@NotBlank</span><br><span class="line">private String hostName;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>authMethod 属性的长度为 1 - 3 个字符</p>
+  <figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@Length(max = 4, min = 1)</span><br><span class="line">private String authMethod;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<ul>
+<li><p>port 属性的取值从 1025 到 65536</p>
+  <figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@Min(1025)</span><br><span class="line">@Max(65536)</span><br><span class="line">private int port;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>from 属性必须满足 Email 格式</p>
+  <figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@Pattern(regexp = &quot;^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]&#123;2,6&#125;$&quot;)</span><br><span class="line">private String from;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>通过这种方式我们就可以验证属性是否合规，而不用使用一系列的 <code>if 、else</code> 来进行验证了。</p>
+<p>如果有验证无法通过，那么我们启动应用的时候 Application 将启动失败，并且抛出一个<code>IllegalStateException</code>异常。</p>
+<h2 id="相关代码"><a href="#相关代码" class="headerlink" title="相关代码"></a>相关代码</h2><p><a href="https://github.com/Tryking/SpringBoot/tree/master/Configuration" target="_blank" rel="noopener">Spring Boot Configuration</a></p>
+
+        </div>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/Java/">Java</a>, <a class="has-link-grey -link" href="/tags/Spring-Boot/">Spring Boot</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="menu-label has-text-centered">Like this article? Support the author with</h3>
+        <div class="buttons is-centered">
+            
+                
+<a class="button is-info donate">
+    <span class="icon is-small">
+        <i class="fab fa-alipay"></i>
+    </span>
+    <span>Alipay</span>
+    <div class="qrcode"><img src="http://media.dengkaiting.com/no_thanks.jpg" alt="Alipay"></div>
+</a>
+
+                
+                
+<a class="button is-success donate">
+    <span class="icon is-small">
+        <i class="fab fa-weixin"></i>
+    </span>
+    <span>Wechat</span>
+    <div class="qrcode"><img src="http://media.dengkaiting.com/no.gif" alt="Wechat"></div>
+</a>
+
+                
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2019/07/02/Gradle-创建-Gradle-构建/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">Gradle - 创建 Gradle 构建</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019/06/29/如何才能更好地成长/">
+                <span class="level-item">如何才能更好地成长</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">Comments</h3>
+        
+<div id="lv-container" data-id="city" data-uid="MTAyMC80NDYzMS8yMTE2MA==">
+    <script type="text/javascript">
+        (function(d, s) {
+            var j, e = d.getElementsByTagName(s)[0];
+
+            if (typeof LivereTower === 'function') { return; }
+
+            j = d.createElement(s);
+            j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+            j.async = true;
+
+            e.parentNode.insertBefore(j, e);
+        })(document, 'script');
+    </script>
+    <noscript> Please activate JavaScript for write a comment in LiveRe</noscript>
+</div>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left is-sticky">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered">
+                <div>
+                    
+                        <figure class="image is-128x128 has-mb-6">
+                            <img class="is-rounded" src="/images/avatar.jpeg" alt="Tryking">
+                        </figure>
+                    
+                    
+                    <p class="is-size-4 is-block">
+                        Tryking
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        末日没有进行曲
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>China</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Posts
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        52
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Categories
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        9
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Tags
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        17
+                    </p>
+                </div>
+            </div>
+        </nav>
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/Tryking" target="_blank">
+                Follow</a>
+        </div>
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Github" href="https://github.com/Tryking">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="CSDN" href="https://blog.csdn.net/sinat_18268881">
+                
+                <i class="fab fa-cuttlefish"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="RSS" href="/">
+                
+                <i class="fas fa-rss"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+<div class="card widget" id="toc">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                Catalogue
+            </h3>
+            <ul class="menu-list"><li>
+        <a class="is-flex" href="#步骤">
+        <span class="has-mr-6">1</span>
+        <span>步骤</span>
+        </a><ul class="menu-list"><li>
+        <a class="is-flex" href="#创建标准-Spring-Boot-工程">
+        <span class="has-mr-6">1.1</span>
+        <span>创建标准 Spring Boot 工程</span>
+        </a></li><li>
+        <a class="is-flex" href="#编写配置文件">
+        <span class="has-mr-6">1.2</span>
+        <span>编写配置文件</span>
+        </a></li><li>
+        <a class="is-flex" href="#编写配置读取类">
+        <span class="has-mr-6">1.3</span>
+        <span>编写配置读取类</span>
+        </a></li><li>
+        <a class="is-flex" href="#测试配置成功与否">
+        <span class="has-mr-6">1.4</span>
+        <span>测试配置成功与否</span>
+        </a></li></ul></li><li>
+        <a class="is-flex" href="#进阶：加载嵌套属性">
+        <span class="has-mr-6">2</span>
+        <span>进阶：加载嵌套属性</span>
+        </a></li><li>
+        <a class="is-flex" href="#进阶：在-Bean-上使用-ConfigurationProperties">
+        <span class="has-mr-6">3</span>
+        <span>进阶：在 @Bean 上使用 @ConfigurationProperties</span>
+        </a></li><li>
+        <a class="is-flex" href="#配置验证">
+        <span class="has-mr-6">4</span>
+        <span>配置验证</span>
+        </a></li><li>
+        <a class="is-flex" href="#相关代码">
+        <span class="has-mr-6">5</span>
+        <span>相关代码</span>
+        </a></li></ul>
+        </div>
+    </div>
+</div>
+
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    末日没有进行曲
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2021 Tryking&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                <br>
+                备案号：<a href="http://beian.miit.gov.cn" target="_blank">晋ICP备16005436号-2</a>
+                <br>
+                <span id="busuanzi_container_site_uv">
+                Visited by <span id="busuanzi_value_site_uv">0</span> users, 
+                <span id="busuanzi_value_site_pv">0</span> visits
+                </span>
+                
+                
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("en");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="Back to Top" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/js/clipboard.js" defer></script>
+    
+
+    
+    
+    
+
+    
+    
+    
+
+
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+
+    <!--背景线条-->
+    <!--<script type="text/javascript" color="0,0,255" opacity='0.7' zIndex="-1" count="99" src="dist/canvas-nest.js"></script>-->
+    <!--<script type="text/javascript" color="0,0,255" opacity='0.7' zIndex="-1" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>-->
+</body>
+</html>

@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+<title>使用XPath定位HTML元素 - 末日没有进行曲</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+    <meta name="description" content="XPath是非常简洁，非常优雅的一种确定HTML元素的方式。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用XPath定位HTML元素">
+<meta property="og:url" content="http://yoursite.com/2018/05/20/e4-bd-bf-e7-94-a8xpath-e5-ae-9a-e4-bd-8dhtml-e5-85-83-e7-b4-a0/index.html">
+<meta property="og:site_name" content="末日没有进行曲">
+<meta property="og:description" content="XPath是非常简洁，非常优雅的一种确定HTML元素的方式。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/images/og_image.png">
+<meta property="og:updated_time" content="2021-05-30T10:27:23.096Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用XPath定位HTML元素">
+<meta name="twitter:description" content="XPath是非常简洁，非常优雅的一种确定HTML元素的方式。">
+<meta name="twitter:image" content="http://yoursite.com/images/og_image.png">
+
+
+
+
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+<script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?4d29c8582767154d4e12ab2007b9f1c7";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    
+    
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+    
+    
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+
+    
+    
+    
+        <script type="text/javascript" src="//js.users.51.la/20168017.js"></script>
+    
+
+
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<!--<body class="is-2-column">-->
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                末日没有进行曲
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item" href="/">Home</a>
+                
+                <a class="navbar-item" href="/archives">Archives</a>
+                
+                <a class="navbar-item" href="/categories">Categories</a>
+                
+                <a class="navbar-item" href="/tags">Tags</a>
+                
+                <a class="navbar-item" href="/about">About</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                    
+                    
+                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="https://github.com/Tryking">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                
+                <a class="navbar-item search" title="Search" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-9-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2018-05-20T07:46:21.000Z">2018-05-20</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/Python/">Python</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    9 minutes read (About 1276 words)
+                </span>
+                
+                
+                <span class="level-item has-text-grey" id="busuanzi_container_page_pv">
+                    <i class="far fa-eye"></i>
+                    <span id="busuanzi_value_page_pv">0</span> visits
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                使用XPath定位HTML元素
+            
+        </h1>
+        <div class="content">
+            <blockquote>
+<p>XPath是非常简洁，非常优雅的一种确定HTML元素的方式。</p>
+</blockquote>
+<a id="more"></a>
+
+<h2 id="基本介绍"><a href="#基本介绍" class="headerlink" title="基本介绍"></a>基本介绍</h2><p>对于XPath的定位，主要有两种方式：</p>
+<pre><code>如果一个条件后面附加的是 【 / 】， 则表示下一步要匹配的节点在下一层。如果一个条件后面附加的是 【 [] 】，则表示下一步要匹配的节点在本层，但是会过滤掉一些不满足条件的节点。</code></pre><p>比如：</p>
+<pre><code>/foo/bar</code></pre><ol>
+<li><p>从root节点开始</p>
+</li>
+<li><p>/foo ：对于任意一个节点（目前是仅是root节点，/ 表示从root节点开始，//表示从任意位置节点开始），获取它的子节点（在这里，root节点总是确定的），检查哪些子节点是 foo 元素，并把这些子节点作为一个新的集合。</p>
+</li>
+<li><p>/bar ：对于第2步中新的集合中的每一个节点，获取它的子节点，检查这些子节点哪些是bar元素，并将它们放到新的集合中。此集合中的元素就是我们要获取的对象。</p>
+<p>/foo[bar]</p>
+</li>
+</ol>
+<ol>
+<li>从root节点开始</li>
+<li>/foo ：对于任意一个节点（目前仅是root节点，同上），获取它的子节点，检查这些子节点中哪些是foo元素，将这些子节点放到一个新的集合中。</li>
+<li>[bar] ：对于第2步中新的集合中的每一个节点，获取它的子节点，检查这些子节点中是否有bar元素，如果没有，则将此节点舍弃（此节点代表第2步中集合中的节点）。此集合中的元素就是我们要获取的对象。</li>
+</ol>
+<p>以上两种方式基本确定了XPath的使用规则，最后，还有一个用 axis 【 :: 】作为前缀分隔的方式，这种axis明确指定了在检查条件前是哪些节点集合应该被选择。 比如：</p>
+<pre><code>/foo/following-sibling::bar</code></pre><ol>
+<li>以root节点开始</li>
+<li>/foo ：对于任意一个节点，获取它的子节点，检查哪些子节点是foo元素，把这些节点放入一个新的集合。</li>
+<li>/following-sibling::bar ：对于第2步中集合中的任意一个节点，获取它所有的兄弟节点，检查哪些是bar元素，然后将它们放入新的集合。此集合中的元素就是我们要获取的对象。</li>
+</ol>
+<p>特别地，对于当前节点的子节点是没有必要声明的，即 child:: 这种是默认的方式（不必要写，写了当然也没错）。因此，我们上面提到的</p>
+<pre><code>/foo/bar 和 /foo[bar] 实际上分别代表： /child::foo/child::bar  和 /child::foo[child::bar]</code></pre><p>通过比较这些表达式以及它们所代表的含义，我们说xpath是非常简洁非常美丽的一种表达HTML元素的方式一点儿也不为过。 当然，还有一些其他的句法可以和 child:: 一样可以省略，比如，你可以使用@foo 代替 attribute::foo， /descendant-or-self::foo 可以写成 //foo。</p>
+<h2 id="句法规则及示例"><a href="#句法规则及示例" class="headerlink" title="句法规则及示例"></a>句法规则及示例</h2><blockquote>
+<p>介绍xpath的详细规则以及示例</p>
+</blockquote>
+<ol>
+<li><p>条件 []</p>
+<h1 id="选择元素-AAA-的-第一个-BBB-子元素"><a href="#选择元素-AAA-的-第一个-BBB-子元素" class="headerlink" title="选择元素 AAA 的 第一个 BBB 子元素"></a>选择元素 AAA 的 第一个 BBB 子元素</h1><p>/AAA/BBB[1]</p>
+<h1 id="选择元素-AAA-的最后一个-BBB-子元素"><a href="#选择元素-AAA-的最后一个-BBB-子元素" class="headerlink" title="选择元素 AAA 的最后一个 BBB 子元素"></a>选择元素 AAA 的最后一个 BBB 子元素</h1><p>/AAA/BBB[last()]</p>
+</li>
+</ol>
+<ol start="2">
+<li><p>属性</p>
+<h1 id="选择所有的属性-id"><a href="#选择所有的属性-id" class="headerlink" title="选择所有的属性 @id"></a>选择所有的属性 @id</h1><p>//@id</p>
+<h1 id="选择所有拥有-name-属性的-BBB-元素"><a href="#选择所有拥有-name-属性的-BBB-元素" class="headerlink" title="选择所有拥有 name 属性的 BBB 元素"></a>选择所有拥有 name 属性的 BBB 元素</h1><p>//BBB[@name]</p>
+<h1 id="选择有任意属性的-BBB-元素"><a href="#选择有任意属性的-BBB-元素" class="headerlink" title="选择有任意属性的 BBB 元素"></a>选择有任意属性的 BBB 元素</h1><p>//BBB[@*]</p>
+<h1 id="选择没有任何一个属性的BBB元素"><a href="#选择没有任何一个属性的BBB元素" class="headerlink" title="选择没有任何一个属性的BBB元素"></a>选择没有任何一个属性的BBB元素</h1><p>//BBB[not(@*)]</p>
+</li>
+</ol>
+<ol start="3">
+<li><p>属性值</p>
+<h1 id="选择有属性-id-b1-的BBB元素"><a href="#选择有属性-id-b1-的BBB元素" class="headerlink" title="选择有属性 id=b1 的BBB元素"></a>选择有属性 id=b1 的BBB元素</h1><p>//BBB[@id=’b1’]</p>
+</li>
+</ol>
+<ol start="4">
+<li><p>节点数量</p>
+<h1 id="选择有两个子节点BBB-的元素"><a href="#选择有两个子节点BBB-的元素" class="headerlink" title="选择有两个子节点BBB 的元素"></a>选择有两个子节点BBB 的元素</h1><p>//*[count(BBB)=2]</p>
+<h1 id="选择有两个子元素的元素"><a href="#选择有两个子元素的元素" class="headerlink" title="选择有两个子元素的元素"></a>选择有两个子元素的元素</h1><p>//<em>[count(</em>)=2]</p>
+</li>
+</ol>
+<ol start="5">
+<li>name等函数的使用</li>
+</ol>
+<blockquote>
+<p>name()函数：返回元素的名称。 starts-with函数：如果第一个参数的string值以第二个参数string值开始，返回true。 contains函数：如果第一个参数的string值包含第二个参数的string值，返回true。</p>
+</blockquote>
+<p>例如：</p>
+<pre><code># 等价于 //BBB
+//*[name()=&apos;BBB&apos;]
+
+# 选择所有以字母B开头的元素
+//*[starts-with(name(), &apos;B&apos;)]
+
+# 选择所有名称包含字母C的元素
+//*[contains(name(), &apos;C&apos;)]</code></pre><ol start="6">
+<li>string-length函数</li>
+</ol>
+<blockquote>
+<p>string-length方法：返回string的字符个数 你应该使用 &lt; 代替 &lt; ，使用 &gt; 代替 &gt;</p>
+</blockquote>
+<pre><code># 选择名字小于三个字符的元素
+//*[string-length(name()) &lt; 3]</code></pre><ol start="7">
+<li><p>使用 | 组合XPaths</p>
+<h1 id="选择所有的CCC元素和BBB元素"><a href="#选择所有的CCC元素和BBB元素" class="headerlink" title="选择所有的CCC元素和BBB元素"></a>选择所有的CCC元素和BBB元素</h1><p>//CCC | //BBB</p>
+</li>
+</ol>
+<ol start="8">
+<li><p>使用 axis</p>
+<h1 id="Child-axis，以下等价于-AAA"><a href="#Child-axis，以下等价于-AAA" class="headerlink" title="Child axis，以下等价于/AAA"></a>Child axis，以下等价于/AAA</h1><p>/child::AAA</p>
+<h1 id="Descendant-axis"><a href="#Descendant-axis" class="headerlink" title="Descendant axis"></a>Descendant axis</h1><h1 id="选择-AAA-BBB-的所有的子孙元素"><a href="#选择-AAA-BBB-的所有的子孙元素" class="headerlink" title="选择 /AAA/BBB 的所有的子孙元素"></a>选择 /AAA/BBB 的所有的子孙元素</h1><p>/AAA/BBB/descendant::*</p>
+<h1 id="选择有CCC祖先的所有的DDD元素"><a href="#选择有CCC祖先的所有的DDD元素" class="headerlink" title="选择有CCC祖先的所有的DDD元素"></a>选择有CCC祖先的所有的DDD元素</h1><p>//CCC/descendant::DDD</p>
+<h1 id="Parent-axis"><a href="#Parent-axis" class="headerlink" title="Parent axis"></a>Parent axis</h1><h1 id="选择所有的DDD元素的父元素"><a href="#选择所有的DDD元素的父元素" class="headerlink" title="选择所有的DDD元素的父元素"></a>选择所有的DDD元素的父元素</h1><p>//DDD/parent::*</p>
+<h1 id="Ancestor-axis"><a href="#Ancestor-axis" class="headerlink" title="Ancestor axis"></a>Ancestor axis</h1><h1 id="选择给定绝对路径元素的所有的祖先元素"><a href="#选择给定绝对路径元素的所有的祖先元素" class="headerlink" title="选择给定绝对路径元素的所有的祖先元素"></a>选择给定绝对路径元素的所有的祖先元素</h1><p>/AAA/BBB/DDD/CCC/ancestor::*</p>
+</li>
+</ol>
+<h2 id="参考及更多用法"><a href="#参考及更多用法" class="headerlink" title="参考及更多用法"></a>参考及更多用法</h2><p><a href="http://zvon.org/comp/r/tut-XPath_1.html#Pages~Parent_axis" target="_blank" rel="noopener">XPath 1.0 Tutorial</a></p>
+
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="menu-label has-text-centered">Like this article? Support the author with</h3>
+        <div class="buttons is-centered">
+            
+                
+<a class="button is-info donate">
+    <span class="icon is-small">
+        <i class="fab fa-alipay"></i>
+    </span>
+    <span>Alipay</span>
+    <div class="qrcode"><img src="http://media.dengkaiting.com/no_thanks.jpg" alt="Alipay"></div>
+</a>
+
+                
+                
+<a class="button is-success donate">
+    <span class="icon is-small">
+        <i class="fab fa-weixin"></i>
+    </span>
+    <span>Wechat</span>
+    <div class="qrcode"><img src="http://media.dengkaiting.com/no.gif" alt="Wechat"></div>
+</a>
+
+                
+        </div>
+    </div>
+</div>
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2018/05/23/trashed/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">如何启动Jupyter</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2018/05/13/e8-87-aa-e7-84-b6-e8-af-ad-e8-a8-80-e5-a4-84-e7-90-86-e4-bc-98-e7-a7-80-e5-8d-9a-e5-ae-a2/">
+                <span class="level-item">自然语言处理博客收集</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+
+<div class="card">
+    <div class="card-content">
+        <h3 class="title is-5 has-text-weight-normal">Comments</h3>
+        
+<div id="lv-container" data-id="city" data-uid="MTAyMC80NDYzMS8yMTE2MA==">
+    <script type="text/javascript">
+        (function(d, s) {
+            var j, e = d.getElementsByTagName(s)[0];
+
+            if (typeof LivereTower === 'function') { return; }
+
+            j = d.createElement(s);
+            j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+            j.async = true;
+
+            e.parentNode.insertBefore(j, e);
+        })(document, 'script');
+    </script>
+    <noscript> Please activate JavaScript for write a comment in LiveRe</noscript>
+</div>
+
+    </div>
+</div>
+</div>
+                
+
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left is-sticky">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered">
+                <div>
+                    
+                        <figure class="image is-128x128 has-mb-6">
+                            <img class="is-rounded" src="/images/avatar.jpeg" alt="Tryking">
+                        </figure>
+                    
+                    
+                    <p class="is-size-4 is-block">
+                        Tryking
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        末日没有进行曲
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>China</span>
+                    </p>
+                    
+                </div>
+            </div>
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Posts
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        52
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Categories
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        9
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        Tags
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        17
+                    </p>
+                </div>
+            </div>
+        </nav>
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/Tryking" target="_blank">
+                Follow</a>
+        </div>
+        
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="Github" href="https://github.com/Tryking">
+                
+                <i class="fab fa-github"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="CSDN" href="https://blog.csdn.net/sinat_18268881">
+                
+                <i class="fab fa-cuttlefish"></i>
+                
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank" title="RSS" href="/">
+                
+                <i class="fas fa-rss"></i>
+                
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
+    
+        
+    
+    
+        <div class="column-right-shadow is-hidden-widescreen ">
+        
+        </div>
+    
+</div>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    末日没有进行曲
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2021 Tryking&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                <br>
+                备案号：<a href="http://beian.miit.gov.cn" target="_blank">晋ICP备16005436号-2</a>
+                <br>
+                <span id="busuanzi_container_site_uv">
+                Visited by <span id="busuanzi_value_site_uv">0</span> users, 
+                <span id="busuanzi_value_site_pv">0</span> visits
+                </span>
+                
+                
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Creative Commons" href="https://creativecommons.org/">
+                        
+                        <i class="fab fa-creative-commons"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
+                        
+                        <i class="fab fa-creative-commons-by"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="GitHub" href="https://github.com/ppoffice/hexo-theme-icarus">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("en");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="Back to Top" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/js/clipboard.js" defer></script>
+    
+
+    
+    
+    
+
+    
+    
+    
+
+
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="Type something...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: 'Posts',
+                PAGES: 'Pages',
+                CATEGORIES: 'Categories',
+                TAGS: 'Tags',
+                UNTITLED: '(Untitled)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+
+    <!--背景线条-->
+    <!--<script type="text/javascript" color="0,0,255" opacity='0.7' zIndex="-1" count="99" src="dist/canvas-nest.js"></script>-->
+    <!--<script type="text/javascript" color="0,0,255" opacity='0.7' zIndex="-1" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>-->
+</body>
+</html>
