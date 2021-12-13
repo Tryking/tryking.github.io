@@ -75,12 +75,12 @@ donate:
         # Donation entry name
         type: alipay
         # Qrcode image URL
-        qrcode: 'http://media.dengkaiting.com/no_thanks.jpg'
+        qrcode: 'https://cdn.jsdelivr.net/gh/Tryking/images/common/no_thanks.jpeg'
     -
         # Donation entry name
         type: wechat
         # Qrcode image URL
-        qrcode: 'http://media.dengkaiting.com/no.gif'
+        qrcode: 'https://cdn.jsdelivr.net/gh/Tryking/images/common/no.gif'
     -
         # Donation entry name
         # type: paypal
