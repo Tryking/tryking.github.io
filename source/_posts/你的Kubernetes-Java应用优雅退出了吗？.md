@@ -30,9 +30,11 @@ Runtime.getRuntime().addShutdownHook(new Thread() {
 })
 ``` 
 
+
 `Shutdown hook` 可以保证在我们代码主动调用 `System.exit()`， `OOM`， 在终端执行 `Ctrl+C`，以及应用主动关闭等情况下时被调用。在实际的场景中，我们可以在上述的线程中执行清理操作。比如，停止 kafka 的数据消费，以及任务的及时处理等。
 
 当我们使用 `java -jar *.jar` 运行 `Java`程序后，通过执行 `kill $pid`，可以发现程序确实可以优雅退出。但是当我把服务部署到 `Kubernetes` 时，发现这个逻辑并没有被执行，到底哪里出了问题？
+
 
 # 在 Kubernetes 中优雅停机
 当我们发送 `delete` 命令给 `pod` 时，`Kubernetes` 会使用优雅停机（默认30s时间），在优雅停机过程中，此 `pod`在 `API server` 中会被更新为`dead`状态。当我们用`kubectl` 命令查看此`pod`时，它被展示为`Terminating` 的状态。当 `Kubelet` 看到 `pod`被标记为了 `Terminating` 状态时，它就会开始执行 `pod` 的 `shutdown` 程序。如果我们 pod 的容器定义了 `preStop hook`，那么这个 hook 会在容器中执行；与此同时，`Kubelet` 会向容器内发送一个`TERM`信号。`Service`也会将此 pod 从 endpoint 列表移除。当优雅停机时间过后，在 `pod` 里仍然存活的进程则会被`SIGKILL`命令杀掉。`Kubelet`会在 `API server` 里通过设置 `grace period=0`（立即删除）来完成 Pod 的删除操作。删除后此 Pod 会在API中消失，并且在客户端也不可见了。
@@ -78,7 +80,7 @@ done
 
 `exec` 的作用是被执行的命令行替换掉当前的 `shell` 进程。测试发现 OK，此时我们实现了优雅停机。但是，这足够优雅吗？
 
-# 更优雅的停机
+# 更优雅地停机
 在上一步，我们实现了优雅停机，但是其实这并不是最优方案。我在看 `start.sh` 脚本中，发现此脚本定义了 `start, restart, stop, status` 4个方法，而且这个脚本中定义了很多额外的变量，如果我们要把之前的功能都实现的话，就需要把逻辑都搬到 `run.sh` 中。这无疑会增大工作量，这是不优雅的原因之一。
 
 其次，一般是不推荐把 `Java 进程`作为`1号`进程的。因为在 `Linux`中，`1号`进程有特殊作用：`1号`进程会作为孤儿进程的父进程，它需要对自己的子进程进行清理回收，避免系统产生僵尸进程。`bash`可以很好地处理这种清理工作，我们一般自己写的 Java 程序是不会考虑这种东西的。
