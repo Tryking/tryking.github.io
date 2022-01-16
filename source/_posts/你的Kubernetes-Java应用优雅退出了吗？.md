@@ -58,12 +58,12 @@ done
 可以看到，我们在 `run.sh` 中进一步执行了 `start.sh`，Java 进程的启动逻辑在`start.sh`脚本中。我们可以执行 `ps -ef` 查看下当前容器中的进程
 
 ```bash
-UID		PID		PPID	C 	STIME 		TTY 	TIME 		CMD
-root	1		0		0	11:01		?		00:00:00	bash ~/run.sh	
-root	4084	1		8	11:01		?		00:15:00	java -Dname=test
-root	14913	1		0	13:49		?		00:00:00	sleep 30
-root	14914	0		0	13:50		pts/0	00:00:00	bash
-root	14955	14914	0	13:50		pts/0	00:00:00	ps -ef
+UID		PID		PPID		C 	STIME 		TTY 	TIME 		CMD
+root		1		0		0	11:01		?	00:00:00	bash ~/run.sh	
+root		4084		1		8	11:01		?	00:15:00	java -Dname=test
+root		14913		1		0	13:49		?	00:00:00	sleep 30
+root		14914		0		0	13:50		pts/0	00:00:00	bash
+root		14955		14914		0	13:50		pts/0	00:00:00	ps -ef
 ```
 
 可以看到，我们运行的 `run.sh` 的 PID 是 `1`，Java 进程的 PID 是 4084，Java 进程是 `run.sh` 进程的一个子进程。问题就出在这里，在 pod 被删除时，`TERM` 信号只会发送给 `1号`进程，而 `run.sh` 接收到此信号后并不会将其转发给 Java 进程，因此 Java 便无法触发 `shutdown hook`，无法实现优雅退出。最终，Java 是被 `SIGKILL` 信号杀掉的（强制退出）。所以，我们只需要让 Java 进程作为 `1号`进程就行了。改写下脚本，我们把启动 Java 进程的命令放到 `run.sh` 中
