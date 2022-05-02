@@ -66,8 +66,11 @@ search:
 # https://ppoffice.github.io/hexo-theme-icarus/categories/Plugins/Comment
 comment:
     # Name of the comment plugin
-    type: livere
-    uid: MTAyMC80NDYzMS8yMTE2MA==
+    # type: livere
+    # uid: MTAyMC80NDYzMS8yMTE2MA==
+    type: valine
+    app_id: JTOmFR6XaA2pNubGAUxVmESk-gzGzoHsz
+    app_key: oqf8CDQdSDIDN3PwuN1OmtIR
 # Donation entries
 # https://ppoffice.github.io/hexo-theme-icarus/categories/Donation/
 donate:

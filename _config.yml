@@ -85,8 +85,8 @@ theme: hexo-theme-icarus
 
 leancloud_counter_security:
   enable_sync: true
-  app_id: o4Mqv3QMbbJ2dMpvGi39yyPj-gzGzoHsz
-  app_key: FPoXvvugUe8ns2IdPCzRhb3c
+  app_id: JTOmFR6XaA2pNubGAUxVmESk-gzGzoHsz
+  app_key: oqf8CDQdSDIDN3PwuN1OmtIR
   # Will be asked while deploying if is left blank
   username: Tryking
   # Recommmended to be left blank. Will be asked while deploying if is left blank
