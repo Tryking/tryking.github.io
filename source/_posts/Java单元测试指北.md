@@ -36,7 +36,7 @@ public class CalcServiceTest {
 	public void should_plus_two_numbers() {
 		// 准备 
    	 	CalcService calcService = new CalcService();
-      	// 执行
+   	 	// 执行
    		int plus = calcService.plus(1, 2);
    		// 断言
    	 	assertEquals("The result should be", 3, plus);
