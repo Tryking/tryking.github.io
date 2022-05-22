@@ -3,7 +3,9 @@ title: 使用 PowerMockito 测试
 toc: true
 date: 2019-11-07 13:19:29
 tags:
+  - 测试
 category:
+  - 测试
 thumbnail:
 ---
 PowerMockito 是 Powermock 集成的 Mockito2 ，可以用来模拟对象进行测试。

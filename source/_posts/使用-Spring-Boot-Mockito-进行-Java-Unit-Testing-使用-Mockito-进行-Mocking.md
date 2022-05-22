@@ -3,7 +3,9 @@ title: 使用 Spring Boot & Mockito 进行 Java Unit Testing - 使用 Mockito �
 toc: true
 date: 2020-02-10 10:35:18
 tags:
+  - 测试
 category:
+  - 测试
 thumbnail:
 ---
 单元测试(Unit Testing) 是我们日常开发中非常重要的一环，这篇文章我将告诉大家如何使用 Spring Boot 和 Mockito 进行测试。
