@@ -243,7 +243,7 @@ public void should_only_one_method_has_been_called() {
 
 对于 mock 方法的调用，我们可以在 `Expectations` 块中使用 `mock.method(args);result = value;`完成，如果我们需要对多个调用返回不同的值，我们可以使用 `return value1, value2, ..., value-n` 代替 `result = value`。
 
-为了验证 mock 方法的调用，我们可以使用一个新的 `Verificatations{{mock.call(value)}}` 代码块完成，或者我们可以直接使用 `Verificatations{mock}`来完成对我们之前定义的所有方法的验证。
+为了验证 mock 方法的调用，我们可以使用一个新的 `Verificatations{mock.call(value)}` 代码块完成，或者我们可以直接使用 `Verificatations{mock}`来完成对我们之前定义的所有方法的验证。
 
 为了验证参数，我们可以使用特定的值，或者我们前面预定义的值，比如：`any, anyString, anyLong` 或其他更多的类似的值。
 
@@ -282,7 +282,8 @@ public void should_only_one_method_has_been_called() {
 # mock 异常抛出
 
 ## Mockito
-我们可以使用在 `Mockito.when(mock.method(args))`后面使用 `.thenThrow(Exception.class)` 来模拟异常的抛出。
+
+我们可以在 `Mockito.when(mock.method(args))`后面使用 `.thenThrow(Exception.class)` 来模拟异常的抛出。
 
 ```Java
 @Test
