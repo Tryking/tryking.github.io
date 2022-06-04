@@ -113,5 +113,5 @@ done
 > **标题**：[你的Kubernetes Java应用优雅停机了吗？](https://dengkaiting.com/)
 > **作者**：[末日没有进行曲](https://dengkaiting.com/)
 > **链接**：[你的Kubernetes Java应用优雅停机了吗？](https://dengkaiting.com/)
-> **时间**：{{ date }}
+> **时间**：2021-01-15
 > **声明**：本博客所有文章均采用 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh) 许可协议，转载请注明出处。
