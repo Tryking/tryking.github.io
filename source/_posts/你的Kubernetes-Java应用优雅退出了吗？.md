@@ -22,14 +22,14 @@ thumbnail:
 因为服务器断电属于极端情况，我们暂且不考虑。那就只有 Java 退出时我们要保证数据的完整性了。在 Java 中，有一个方法可以实现应用退出时候的优雅停机：`shutdown hook`。`Spring boot`把这个东西封装了一下，可以通过 `@PreDestroy` 注解实现。当 `JVM` 收到退出的信号时，会调用 `shutdown hook` 中的方法，完成清理操作。示例代码如下：
 
 
-```java
+```
 Runtime.getRuntime().addShutdownHook(new Thread() {
 	@Override
 	public void run() {
 		System.out.println("Start to run shutdown hook.");
 	}
 })
-``` 
+```
 
 
 `Shutdown hook` 可以保证在我们代码主动调用 `System.exit()`， `OOM`， 在终端执行 `Ctrl+C`，以及应用主动关闭等情况下时被调用。在实际的场景中，我们可以在上述的线程中执行清理操作。比如，停止 kafka 的数据消费，以及任务的及时处理等。
